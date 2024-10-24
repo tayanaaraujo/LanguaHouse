@@ -14,63 +14,68 @@ app.config['MYSQL_DB'] = DB_CONFIG['MYSQL_DB']
 # Inicializando o MySQL
 mysql = MySQL(app)
 
-# Página inicial (home)
 @app.route('/')
-def home():
+def index():
     return render_template('index.html')
 
-# Página inicial do CRUD (listar contatos)
-@app.route('/contatos/')
-def index():
-    cur = mysql.connection.cursor()
-    cur.execute("SELECT * FROM contatos")
-    contatos = cur.fetchall()  # Retorna tuplas
-    cur.close()
-    return render_template('contatos/index.html', contatos=contatos)
+ 
 
-# Adicionar contato
-@app.route('/contatos/add', methods=['GET', 'POST'])
-def add():
+@app.route('/usuarios/', methods=['GET', 'POST'])
+def create():
     if request.method == 'POST':
         nome = request.form['nome']
-        telefone = request.form['telefone']
-        
+        email = request.form['email']
+        data_nasc = request.form['data_nasc']
+        senha = request.form['senha']
+        cidade = request.form['cidade']
+        estado = request.form['estado']
+
         cur = mysql.connection.cursor()
-        cur.execute("INSERT INTO contatos (nome, telefone) VALUES (%s, %s)", (nome, telefone))
+        cur.execute("INSERT INTO Usuario (nome, email, data_nasc, senha, cidade, estado) VALUES (%s, %s, %s, %s, %s, %s)",
+                    (nome, email, data_nasc, senha, cidade, estado))
         mysql.connection.commit()
         cur.close()
         return redirect(url_for('index'))
-    
-    return render_template('contatos/add.html')
 
-# Editar contato
-@app.route('/contatos/edit/<int:id>', methods=['GET', 'POST'])
-def edit(id):
+    return render_template('usuarios/create.html')
+
+ 
+@app.route('/update/<int:id>', methods=['GET', 'POST'])
+def update(id):
     cur = mysql.connection.cursor()
-    cur.execute("SELECT * FROM contatos WHERE id = %s", (id,))
-    contato = cur.fetchone()  # Retorna tupla
-    cur.close()
-    
+    cur.execute("SELECT * FROM Usuario WHERE cod_usuario = %s", (id,))
+    usuario = cur.fetchone()
+
     if request.method == 'POST':
         nome = request.form['nome']
-        telefone = request.form['telefone']
-        
-        cur = mysql.connection.cursor()
-        cur.execute("UPDATE contatos SET nome = %s, telefone = %s WHERE id = %s", (nome, telefone, id))
+        email = request.form['email']
+        data_nasc = request.form['data_nasc']
+        senha = request.form['senha']
+        cidade = request.form['cidade']
+        estado = request.form['estado']
+
+        cur.execute("UPDATE Usuario SET nome=%s, email=%s, data_nasc=%s, senha=%s, cidade=%s, estado=%s WHERE cod_usuario=%s",
+                    (nome, email, data_nasc, senha, cidade, estado, id))
+
         mysql.connection.commit()
         cur.close()
-        return redirect(url_for('index'))
-    
-    return render_template('contatos/edit.html', contato=contato)
 
-# Deletar contato
-@app.route('/contatos/delete/<int:id>')
+        return redirect(url_for('index'))
+
+    cur.close()
+    return render_template('update.html', usuario=usuario)
+
+ 
+
+@app.route('/delete/<int:id>')
 def delete(id):
     cur = mysql.connection.cursor()
-    cur.execute("DELETE FROM contatos WHERE id = %s", (id,))
+    cur.execute("DELETE FROM Usuario WHERE cod_usuario = %s", (id,))
     mysql.connection.commit()
     cur.close()
+
     return redirect(url_for('index'))
+
 
 if __name__ == '__main__':
     app.run(debug=True)
