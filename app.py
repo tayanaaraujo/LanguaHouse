@@ -31,7 +31,7 @@ def create():
         estado = request.form['estado']
 
         cur = mysql.connection.cursor()
-        cur.execute("INSERT INTO Usuario (nome, email, data_nasc, senha, cidade, estado) VALUES (%s, %s, %s, %s, %s, %s)",
+        cur.execute("INSERT INTO usuario (nome, email, data_nasc, senha, cidade, estado) VALUES (%s, %s, %s, %s, %s, %s)",
                     (nome, email, data_nasc, senha, cidade, estado))
         mysql.connection.commit()
         cur.close()
@@ -39,11 +39,16 @@ def create():
 
     return render_template('usuarios/create.html')
 
+
+
+@app.route('/usuarios/login', methods=['GET', 'POST'] )
+def login():
+    return render_template('usuarios/login.html')
  
 @app.route('/update/<int:id>', methods=['GET', 'POST'])
 def update(id):
     cur = mysql.connection.cursor()
-    cur.execute("SELECT * FROM Usuario WHERE cod_usuario = %s", (id,))
+    cur.execute("SELECT * FROM usuario WHERE cod_usuario = %s", (id,))
     usuario = cur.fetchone()
 
     if request.method == 'POST':
@@ -54,7 +59,7 @@ def update(id):
         cidade = request.form['cidade']
         estado = request.form['estado']
 
-        cur.execute("UPDATE Usuario SET nome=%s, email=%s, data_nasc=%s, senha=%s, cidade=%s, estado=%s WHERE cod_usuario=%s",
+        cur.execute("UPDATE usuario SET nome=%s, email=%s, data_nasc=%s, senha=%s, cidade=%s, estado=%s WHERE cod_usuario=%s",
                     (nome, email, data_nasc, senha, cidade, estado, id))
 
         mysql.connection.commit()
@@ -70,7 +75,7 @@ def update(id):
 @app.route('/delete/<int:id>')
 def delete(id):
     cur = mysql.connection.cursor()
-    cur.execute("DELETE FROM Usuario WHERE cod_usuario = %s", (id,))
+    cur.execute("DELETE FROM usuario WHERE cod_usuario = %s", (id,))
     mysql.connection.commit()
     cur.close()
 

@@ -15,7 +15,7 @@
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
           <div class="container-fluid">
             <a class="navbar-brand" href="#">LanguaHouse</a>
-            <a class="navbar-brand" href="{{ url_for('create') }}"> Login</a>
+            <a class="navbar-brand" href="{{ url_for('login') }}"> Login</a>
           </div>
         </nav>
     </div>
@@ -27,8 +27,8 @@
               </div>
               <div class="col coluna2">
                 <h3> O jeito grátis, divertido e eficaz de aprender um idioma! </h3>
-                <button type="button" class="btn  btn-lg" href="/templates/usuarios/cadastro.html">Comece agora</button> <br>
-                <button type="button" class="btn btn-lg">Já tenho uma conta</button>
+                <a class="navbar-brand" href="{{ url_for('create') }}"> <button type="button" class="btn  btn-lg" href="/templates/usuarios/cadastro.html">Comece agora</button></a> <br>
+                <a class="navbar-brand" href="{{ url_for('login') }}"> <button type="button" class="btn btn-lg">Já tenho uma conta</button> </a>
               </div>
         </div>
 
