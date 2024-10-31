@@ -14,7 +14,7 @@
     <div class="container">
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
           <div class="container-fluid">
-            <a class="navbar-brand" href="#">LanguaHouse</a>
+            <a class="navbar-brand" href="{{ url_for('index') }}">LanguaHouse</a>
             <a class="navbar-brand" href="{{ url_for('login') }}"> Login</a>
           </div>
         </nav>
@@ -130,15 +130,7 @@
 
         <div class="container quinta_linha">
             <div class="row">
-              <div class="col align-self-start">
-                One of three columns
-              </div>
-              <div class="col  ">
-                One of three columns
-              </div>
-              <div class="col align-self-end">
-                One of three columns
-              </div>
+                <a class="navbar-brand" href="{{ url_for('create') }}"> <button type="button" class="btn  btn-lg" href="/templates/usuarios/cadastro.html">Comece agora</button></a>
             </div>
           </div>
     </main>

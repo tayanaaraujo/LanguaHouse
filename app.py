@@ -19,7 +19,7 @@ def index():
     return render_template('index.html')
 
  
-
+#Cadastro de Usuario
 @app.route('/usuarios/', methods=['GET', 'POST'])
 def create():
     if request.method == 'POST':
@@ -40,11 +40,15 @@ def create():
     return render_template('usuarios/create.html')
 
 
-
+#Login de Usuario
 @app.route('/usuarios/login', methods=['GET', 'POST'] )
 def login():
     return render_template('usuarios/login.html')
  
+
+
+
+#Atualizar dados do usuario
 @app.route('/update/<int:id>', methods=['GET', 'POST'])
 def update(id):
     cur = mysql.connection.cursor()
@@ -70,16 +74,33 @@ def update(id):
     cur.close()
     return render_template('update.html', usuario=usuario)
 
- 
 
-@app.route('/delete/<int:id>')
-def delete(id):
-    cur = mysql.connection.cursor()
-    cur.execute("DELETE FROM usuario WHERE cod_usuario = %s", (id,))
-    mysql.connection.commit()
-    cur.close()
 
-    return redirect(url_for('index'))
+
+#Pesquisar usuarios
+@app.route('/usuarios/read', methods=['GET', 'POST'] )
+def read():
+    return render_template('usuarios/read.html')
+
+#perfil do usuario
+@app.route('/usuarios/perfil', methods=['GET', 'POST'] )
+def perfil():
+    return render_template('usuarios/perfil.html')
+
+#Deletar usuario
+@app.route('/usuarios/login', methods=['GET', 'POST'] )
+def delete_usuario():
+    return render_template('usuarios/delete.html')
+
+#Forum grupos
+@app.route('/grupos/forum', methods=['GET', 'POST'] )
+def form():
+    return render_template('/grupos/forum.html')
+
+#Idiomas
+@app.route('/idiomas/cadastro', methods=['GET', 'POST'] )
+def cad_idioma():
+    return render_template('idiomas/cadastro_idioma.html')
 
 
 if __name__ == '__main__':
