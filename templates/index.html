@@ -11,171 +11,113 @@
     <title>LanguaHouse</title>
   </head>
   <body>
-    <div class="container">
-        <nav class="navbar navbar-expand-lg navbar-light bg-light">
-          <div class="container-fluid">
-            <a class="navbar-brand" href="{{ url_for('index') }}">LanguaHouse</a>
-            <a class="navbar-brand" href="{{ url_for('login') }}"> Login</a>
-          </div>
-        </nav>
-    </div>
-    <main>
-        <div class="container primeira_linha">
-            <div class="row">
-              <div class="col offset-md-2">
-                <img src="/static/img/gato.png" class="img-thumbnail img_gato" alt="...">
-              </div>
-              <div class="col coluna2">
-                <h3> O jeito grátis, divertido e eficaz de aprender um idioma! </h3>
-                <a class="navbar-brand" href="{{ url_for('create') }}"> <button type="button" class="btn  btn-lg" href="/templates/usuarios/cadastro.html">Comece agora</button></a> <br>
-                <a class="navbar-brand" href="{{ url_for('login') }}"> <button type="button" class="btn btn-lg">Já tenho uma conta</button> </a>
-              </div>
+    <!-- Cabeçalho -->
+    <nav class="navbar navbar-expand-lg navbar-light">
+      <div class="container">
+        <a class="navbar-brand text-white" href="{{ url_for('index') }}">LanguaHouse</a>
+        <div class="d-flex">
+          <a class="btn btn-outline-light me-3" href="{{ url_for('login') }}">Entrar</a>
+          <a class="btn btn-warning text-dark" href="{{ url_for('create') }}">Cadastrar</a>
         </div>
+      </div>
+    </nav>
 
-        <div class="container segunda_linha">
-            <div class="row  ">
-                <div class="col-md-3 offset-md-3 ">
-                    <button type="button" class="btn btn-lg">Inglês</button> <br>
-                </div>
-
-                <div class="col align-self-end">
-                    <button type="button" class="btn  btn-lg">Espanhol</button> <br>
-                </div>
-            </div>
-        </div>
-        
-        <div class="container terceira_linha">
-            <div class="row">
-                <div class="col align-self-center">
-                    <h3>Aqui aprendemos juntos</h3>
-                </div>
-
-                <div class="col">
-                    <img src="/static/img/maos.png" alt="">
-                </div>
-            </div>
-        </div>
-
-        <div class="container quarta_linha">
-            <div class="row">
-                <div class="col offset-md-2">
-                    <img src="/static/img/mundo.png" alt="">
-                </div>
-
-                <div class="col">
-                    <h3>Reuna-se com pessoas que querem aprender </h3>
-                </div>
-            </div>
-        </div>
-
-        <div class="container terceira_linha">
-            <div class="row">
-                <div class="col align-self-center">
-                    <h3>Aqui aprendemos juntos</h3>
-                </div>
-
-                <div class="col">
-                    <img src="/static/img/maos.png" alt="">
-                </div>
-            </div>
-        </div>
-
-        <div class="container quarta_linha">
-            <div class="row">
-                <div class="col offset-md-2">
-                    <img src="/static/img/mundo.png" alt="">
-                </div>
-
-                <div class="col">
-                    <h3>Reuna-se com pessoas que querem aprender </h3>
-                </div>
-            </div>
-        </div>
-
-        <div class="container terceira_linha">
-            <div class="row">
-                <div class="col align-self-center">
-                    <h3>Aprenda ensinando</h3>
-                </div>
-
-                <div class="col">
-                    <img src="/static/img/maos.png" alt="">
-                </div>
-            </div>
-        </div>
-
-        <div class="container quarta_linha">
-            <div class="row">
-                <div class="col offset-md-2">
-                    <img src="/static/img/mundo.png" alt="">
-                </div>
-
-                <div class="col">
-                    <h3>Ensine </h3>
-                </div>
-            </div>
-        </div>
-
-        <div class="container terceira_linha">
-            <div class="row">
-                <div class="col align-self-center">
-                    <h3>Aqui, aprendemos juntos</h3>
-                </div>
-
-                <div class="col">
-                    <img src="/static/img/maos.png" alt="">
-                </div>
-            </div>
-        </div>
-
-        <div class="container quinta_linha">
-            <div class="row">
-                <a class="navbar-brand" href="{{ url_for('create') }}"> <button type="button" class="btn  btn-lg" href="/templates/usuarios/cadastro.html">Comece agora</button></a>
+    <!-- Banner Principal -->
+    <section class="banner bg-purple py-5 text-center text-white">
+      <div class="container">
+        <div class="row align-items-center">
+          <div class="col-md-6">
+            <h1 class="display-4">O jeito grátis, divertido e eficaz de aprender um idioma!</h1>
+            <div class="mt-4">
+              <a class="btn btn-warning btn-lg text-dark" href="{{ url_for('create') }}">Comece Agora</a>
+              <a class="btn btn-outline-light btn-lg ms-3" href="{{ url_for('login') }}">Já Tenho Conta</a>
             </div>
           </div>
-    </main>
-    
+          <div class="col-md-6">
+            <img src="/static/img/mascote.png" class="img-fluid" alt="Imagem de Gato">
+          </div>
+        </div>
+      </div>
+    </section>
 
+    <!-- Seção de Idiomas -->
+    <section class="py-5">
+      <div class="container text-center">
+        <h2 class="mb-4">Escolha seu idioma</h2>
+        <div class="row">
+          <div class="col-md-6 mb-3">
+            <a href="#" class="btn btn-lg btn-primary w-100">Inglês</a>
+          </div>
+          <div class="col-md-6 mb-3">
+            <a href="#" class="btn btn-lg btn-primary w-100">Espanhol</a>
+          </div>
+        </div>
+      </div>
+    </section>
 
-    <footer>
-            <div class="footer-contato">
-              <h3>Contato</h3>
-              <ul>
-                <li><strong>Telefone:</strong> (11) 1234-5678</li>
-                <li><strong>Email:</strong> exemplo@email.com</li>
-                <li><strong>Redes Sociais</strong></li>
-              </ul>
-            </div>
+    <!-- Seção de Aprendizado -->
+    <section class="py-5 bg-light">
+      <div class="container text-center">
+        <h3>Aqui aprendemos juntos</h3>
+        <div class="row justify-content-center mt-4">
+          <div class="col-md-6">
+            <img src="/static/img/maos.png" class="img-fluid" alt="Imagem de mãos">
+          </div>
+        </div>
+      </div>
+    </section>
 
-            <div class="footer-politica">
-                <h3>Políticas</h3>
-                <ul>
-                    <li><strong>Política de Privacidade</strong></li>
-                    <li><strong>Termos de Uso</strong></li>
-                </ul>
-            </div>
+    <!-- Seção de Reunião -->
+    <section class="py-5">
+      <div class="container text-center">
+        <h3>Reúna-se com pessoas que querem aprender</h3>
+        <div class="row justify-content-center mt-4">
+          <div class="col-md-6">
+            <img src="/static/img/mundo.png" class="img-fluid" alt="Imagem de Mundo">
+          </div>
+        </div>
+      </div>
+    </section>
 
-            <div class="footer-recursos">
-                <h3>Recursos Adicioanis</h3>
-                <ul>
-                    <li><strong>Dicas de Estudo</strong></li>
-                    <li><strong>Eventos</strong></li>
-                    <li><strong>Central de Ajuda</strong></li>
-                </ul>
-            </div>
+    <!-- Seção Final -->
+    <section class="py-5 text-center">
+      <div class="container">
+        <a class="btn btn-warning btn-lg text-dark" href="{{ url_for('create') }}">Comece Agora</a>
+      </div>
+    </section>
 
-            
+    <!-- Rodapé -->
+    <footer class="bg-purple text-white py-5">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-4">
+            <h5>Contato</h5>
+            <ul class="list-unstyled">
+              <li><strong>Telefone:</strong> (11) 1234-5678</li>
+              <li><strong>Email:</strong> exemplo@email.com</li>
+              <li><strong>Redes Sociais</strong></li>
+            </ul>
+          </div>
+          <div class="col-md-4">
+            <h5>Políticas</h5>
+            <ul class="list-unstyled">
+              <li><a href="#">Política de Privacidade</a></li>
+              <li><a href="#">Termos de Uso</a></li>
+            </ul>
+          </div>
+          <div class="col-md-4">
+            <h5>Recursos</h5>
+            <ul class="list-unstyled">
+              <li><a href="#">Dicas de Estudo</a></li>
+              <li><a href="#">Eventos</a></li>
+              <li><a href="#">Central de Ajuda</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
     </footer>
 
-
-
-    
+    <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
-
-    <!-- Option 2: Separate Popper and Bootstrap JS -->
-    <!--
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
-    -->
   </body>
 </html>
