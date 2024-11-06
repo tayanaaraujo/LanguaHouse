@@ -39,7 +39,71 @@ img
 }
 
 
-
-
-
 /*  Rodape    */
+footer {
+    background-color: #6a5acd;
+    color: #fff;
+    padding: 30px 20px;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    font-family: Arial, sans-serif;
+    text-align: left;
+  }
+  
+  /* Estilo para as seções do footer */
+  footer h3 {
+    margin-bottom: 15px;
+    font-size: 18px;
+    font-weight: bold;
+  }
+  
+  footer ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  footer ul li {
+    margin: 10px 0;
+  }
+  
+  footer ul li strong {
+    font-weight: normal;
+    color: #ccc; /* Cor para o texto adicional */
+  }
+  
+  /* Estilo para cada coluna do footer */
+  .footer-contato,
+  .footer-politica,
+  .footer-recursos {
+    flex: 1 1 250px; /* Permite que as seções se ajustem */
+    min-width: 220px;
+    margin-right: 20px;
+  }
+  
+  .footer-contato ul li,
+  .footer-politica ul li,
+  .footer-recursos ul li {
+    font-size: 14px;
+  }
+  
+  .footer-contato ul li strong,
+  .footer-politica ul li strong,
+  .footer-recursos ul li strong {
+    color: #ffcc00; /* Cor destacada para as labels */
+  }
+  
+  /* Responsividade - para telas menores, as colunas ficam empilhadas */
+  @media (max-width: 768px) {
+    footer {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+    .footer-contato, .footer-politica, .footer-recursos {
+      margin-right: 0;
+      margin-bottom: 20px;
+    }
+  }
+  
+  
