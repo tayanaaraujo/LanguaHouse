@@ -1,66 +1,210 @@
 /* Geral */
 body {
-  font-family: Arial, sans-serif;
+  font-family: 'Arial', sans-serif;
   background-color: #f8f9fa;
   margin: 0;
   padding: 0;
+  line-height: 1.6;
 }
 
-h3, h2 {
+h2, h3 {
   color: #333;
+  font-weight: bold;
+}
+
+h1 {
+  font-size: 3rem;
+}
+
+h2, h3 {
+  font-size: 2rem;
 }
 
 /* Cabeçalho */
 .navbar {
-  background-color: #6a5acd;
-  padding: 20px;
+  background-color: #4a3c8c;
+  padding: 20px 0;
+  border-bottom: 4px solid #ffcc00;
 }
 
 .navbar-brand {
-  font-size: 1.8rem;
+  font-size: 2rem;
   font-weight: bold;
+  color: #fff;
+  text-transform: uppercase;
+  letter-spacing: 2px;
 }
 
 .navbar .btn {
   font-weight: bold;
   text-transform: uppercase;
+  border-radius: 25px;
+}
+
+.navbar .btn-outline-light {
+  border-color: #fff;
+  color: #fff;
+}
+
+.navbar .btn-warning {
+  background-color: #ffcc00;
+  color: #4a3c8c;
 }
 
 /* Banner Principal */
 .banner {
   background-color: #6a5acd;
+  background-size: cover;
+  background-position: center;
+  color: #fff;
+  padding: 80px 0;
+  text-align: center;
 }
 
 .banner h1 {
-  font-size: 3rem;
-  font-weight: bold;
+  font-size: 3.5rem;
+  margin-bottom: 30px;
 }
 
 .banner .btn {
   font-weight: bold;
+  text-transform: uppercase;
+  padding: 12px 30px;
+  margin: 10px;
+  border-radius: 25px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.banner .btn:hover {
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+}
+
+/* Os 3 pontos fortes do Langua House */
+.icon-box {
+  background-color: #fff;
+  border: 2px solid #e0e0e0;
+  padding: 40px;
+  border-radius: 15px;
+  text-align: center;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s;
+}
+
+.icon-box:hover {
+  transform: translateY(-10px);
+}
+
+.icon-box i {
+  color: #6a5acd;
+  margin-bottom: 20px;
+}
+
+.icon-box h3 {
+  font-size: 1.8rem;
+  color: #333;
+  margin-bottom: 15px;
+}
+
+.icon-box p {
+  color: #555;
+  font-size: 1.1rem;
+  line-height: 1.5;
+}
+
+/* Estilo para os botões de Idiomas */
+.btn-custom {
+  background-color: #6a5acd;
+  color: white;
+  font-size: 1.2rem;
+  font-weight: bold;
+  padding: 15px 20px;
+  border-radius: 30px;
+  transition: background-color 0.3s, transform 0.3s;
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+}
+
+.btn-custom:hover {
+  background-color: #5a47c1;
+  transform: scale(1.05);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
 }
 
 /* Seções */
 section {
-  padding: 50px 0;
+  padding: 80px 0;
 }
 
 section.bg-light {
   background-color: #f9f9f9;
 }
 
-/* Rodapé */
-footer {
-  background-color: #6a5acd;
+/* Seção de método LanguaHouse */
+section.py-5 h3 {
+  font-size: 1.25rem;
+  color: #333;
+  line-height: 1.8;
 }
 
+section.py-5 h2 {
+  margin-bottom: 30px;
+}
+
+/* Rodapé */
+footer {
+  background-color: #4a3c8c;
+  color: #fff;
+  padding: 50px 0;
+  position: relative; /* Necessário para o posicionamento absoluto do nome do site */
+}
+
+/* Adiciona a imagem do mascote à esquerda */
+footer .mascote {
+  position: absolute;
+  top: 50%;
+  left: 10px;
+  transform: translateY(-50%);
+  width: 80px; /* Tamanho da imagem do mascote */
+  height: auto;
+}
+
+/* Estilização do nome do site no canto inferior direito */
+footer .nome-site {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #fff;
+}
+
+/* Estilização dos ícones das redes sociais */
+footer .social-icons {
+  margin-top: 10px;
+  font-size: 1.75rem; /* Tamanho dos ícones */
+  display: flex;
+  justify-content: center; /* Centraliza os ícones horizontalmente */
+  gap: 20px; /* Espaço entre os ícones */
+}
+
+footer .social-icons a {
+  color: #ffcc00;
+  text-decoration: none;
+  display: inline-block; /* Garante que os ícones não fiquem em linha reta */
+}
+
+footer .social-icons a:hover {
+  color: #fff; /* Cor de hover */
+}
+
+/* Estilização do título e lista do rodapé */
 footer h5 {
   font-size: 1.25rem;
   font-weight: bold;
+  margin-bottom: 15px; /* Adiciona um pouco de espaço abaixo do título */
 }
 
 footer ul li {
-  margin-bottom: 10px;
+  margin-bottom: 12px;
 }
 
 footer ul a {
@@ -72,6 +216,8 @@ footer ul a:hover {
   text-decoration: underline;
 }
 
+
+
 /* Responsividade */
 @media (max-width: 768px) {
   .navbar {
@@ -79,18 +225,31 @@ footer ul a:hover {
   }
 
   .banner h1 {
-    font-size: 2rem;
+    font-size: 2.5rem;
   }
-  
-  .banner .container {
-    padding-left: 10px;
-    padding-right: 10px;
+
+  .icon-box {
+    padding: 25px;
+  }
+
+  .icon-box h3 {
+    font-size: 1.4rem;
+  }
+
+  .btn-custom {
+    font-size: 1rem;
   }
 
   footer {
     padding: 30px 20px;
   }
+
+  footer ul {
+    text-align: center;
+  }
 }
+
+
 
 /* Estilo para as mensagens de flash */
 .alert-container {
@@ -151,3 +310,4 @@ footer ul a:hover {
     opacity: 1;
   }
 }
+

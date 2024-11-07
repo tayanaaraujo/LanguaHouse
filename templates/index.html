@@ -1,9 +1,12 @@
 <!doctype html>
 <html lang="pt-BR">
   <head>
-    <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
+
+    <!-- Favicon -->
+    <link rel="icon" href="static\img\favicon.png" type="favicon/png">
 
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
@@ -27,7 +30,7 @@
       <div class="container">
         <div class="row align-items-center">
           <div class="col-md-6">
-            <h1 class="display-4">O jeito grátis, divertido e eficaz de aprender um idioma!</h1>
+            <h1 class="display-4">Aprenda idiomas de forma gratuita, segura e colaborativa</h1>
             <div class="mt-4">
               <a class="btn btn-warning btn-lg text-dark" href="{{ url_for('create') }}">Comece Agora</a>
               <a class="btn btn-outline-light btn-lg ms-3" href="{{ url_for('login') }}">Já Tenho Conta</a>
@@ -40,25 +43,62 @@
       </div>
     </section>
 
-    <!-- Seção de Idiomas -->
+    <section class="py-5 bg-light">
+      <div class="container text-center">
+        <div class="row">
+          <!-- Aprendizado Colaborativo -->
+          <div class="col-md-4 mb-4">
+            <div class="icon-box">
+              <i class="fas fa-users fa-3x"></i> <!-- Ícone de pessoas -->
+              <h3>Aprendizado Colaborativo e Interativo</h3>
+              <p>No LanguaHouse, você aprende e ensina de forma colaborativa, conectando-se com outros estudantes e falantes nativos.</p>
+            </div>
+          </div>
+    
+          <!-- Acessibilidade e Flexibilidade -->
+          <div class="col-md-4 mb-4">
+            <div class="icon-box">
+              <i class="fas fa-clock fa-3x"></i> <!-- Ícone de relógio -->
+              <h3>Acessibilidade e Flexibilidade</h3>
+              <p>Pratique idiomas quando e onde quiser, sem custos. O LanguaHouse oferece flexibilidade total para você aprender no seu ritmo.</p>
+            </div>
+          </div>
+    
+          <!-- Conexões Globais e Diversidade Cultural -->
+          <div class="col-md-4 mb-4">
+            <div class="icon-box">
+              <i class="fas fa-globe-americas fa-3x"></i> <!-- Ícone de globo -->
+              <h3>Conexões e Diversidade Cultural</h3>
+              <p>Conecte-se com estudantes de todo o mundo e compartilhe experiências culturais enquanto aprimora suas habilidades linguísticas.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    
+   <!-- Seção de Idiomas -->
     <section class="py-5">
       <div class="container text-center">
         <h2 class="mb-4">Escolha seu idioma</h2>
         <div class="row">
           <div class="col-md-6 mb-3">
-            <a href="#" class="btn btn-lg btn-primary w-100">Inglês</a>
+            <a href="#" class="btn btn-lg btn-custom w-100">Inglês</a>
           </div>
           <div class="col-md-6 mb-3">
-            <a href="#" class="btn btn-lg btn-primary w-100">Espanhol</a>
+            <a href="#" class="btn btn-lg btn-custom w-100">Espanhol</a>
           </div>
         </div>
       </div>
     </section>
-
-    <!-- Seção de Aprendizado -->
+  
     <section class="py-5 bg-light">
       <div class="container text-center">
-        <h3>Aqui aprendemos juntos</h3>
+        <h2>O método do Langua House</h2>
+        <h3>No LanguaHouse, o aprendizado de idiomas acontece de forma colaborativa. Você se conecta com
+            pessoas que falam o idioma que deseja aprender e pode tanto ensinar quanto aprender de forma
+            mútua. O método é totalmente flexível: você escolhe com quem praticar, em qual horário e no nível
+            que melhor se adapta às suas necessidades. Tudo de forma virtual, segura e gratuita, sem sair de casa.
+        </h3>
         <div class="row justify-content-center mt-4">
           <div class="col-md-6">
             <img src="/static/img/maos.png" class="img-fluid" alt="Imagem de mãos">
@@ -67,13 +107,16 @@
       </div>
     </section>
 
-    <!-- Seção de Reunião -->
-    <section class="py-5">
+    <section class="py-5 bg-light">
       <div class="container text-center">
-        <h3>Reúna-se com pessoas que querem aprender</h3>
+        <h2>Pratique inglês ou espanhol em grupos</h2>
+        <h3>Você pode aprender e praticar inglês e espanhol de forma colaborativa em grupos de estudo. 
+          Conecte-se com falantes nativos e outros estudantes, troque conhecimentos e pratique no seu ritmo, sem custos. 
+          Participe de conversas ao vivo, aprenda com diferentes níveis e culturas, e melhore suas habilidades linguísticas de maneira divertida e flexível!.
+        </h3>
         <div class="row justify-content-center mt-4">
           <div class="col-md-6">
-            <img src="/static/img/mundo.png" class="img-fluid" alt="Imagem de Mundo">
+            <img src="/static/img/pratique.png">
           </div>
         </div>
       </div>
@@ -93,9 +136,8 @@
           <div class="col-md-4">
             <h5>Contato</h5>
             <ul class="list-unstyled">
-              <li><strong>Telefone:</strong> (11) 1234-5678</li>
-              <li><strong>Email:</strong> exemplo@email.com</li>
-              <li><strong>Redes Sociais</strong></li>
+              <li><strong>Telefone:</strong> (19) 9774-6384</li>
+              <li><strong>Email:</strong> languahouse@gmail.com</li>
             </ul>
           </div>
           <div class="col-md-4">
