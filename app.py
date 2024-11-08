@@ -1,8 +1,10 @@
 # app.py
+import MySQLdb
 from flask import Flask, render_template, request, redirect, url_for, session, flash
 from flask_mysqldb import MySQL
 from config import DB_CONFIG
 import secrets
+from werkzeug.security import check_password_hash, generate_password_hash
 
 app = Flask(__name__)
 
@@ -21,7 +23,7 @@ app.secret_key = '9b4e5417c43ff5c1d2168b1677b1957e'
 def index():
     return render_template('index.html')
 
-#Cadastro de Usuario
+#Cadastro
 @app.route('/usuarios/', methods=['GET', 'POST'])
 def create():
     if request.method == 'POST':
@@ -31,14 +33,20 @@ def create():
         senha = request.form['senha']
         cidade = request.form['cidade']
         estado = request.form['estado']
+        
+        # Gerando o hash da senha antes de salvar no banco de dados
+        senha_hash = generate_password_hash(senha)  # Aplica o hash na senha
 
+        # Inserindo o novo usuário com a senha hashada no banco de dados
         cur = mysql.connection.cursor()
-        cur.execute("INSERT INTO usuario (nome, email, data_nasc, senha, cidade, estado) VALUES (%s, %s, %s, %s, %s, %s)",
-                    (nome, email, data_nasc, senha, cidade, estado))
+        cur.execute("""
+            INSERT INTO usuario (nome, email, data_nasc, senha, cidade, estado)
+            VALUES (%s, %s, %s, %s, %s, %s)
+        """, (nome, email, data_nasc, senha_hash, cidade, estado))
         mysql.connection.commit()
         cur.close()
-        return redirect(url_for('index'))
 
+        return redirect(url_for('index'))
     
     return render_template('usuarios/create.html')
 
@@ -51,16 +59,16 @@ def login():
         password = request.form['password']
 
         # Conectar ao banco de dados
-        cur = mysql.connection.cursor()
+        cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
         cur.execute("SELECT * FROM usuario WHERE email = %s", (email,))
         user = cur.fetchone()
         cur.close()
 
         # Verificar se o usuário existe e se a senha é correta
-        if user and user[4] == password:  # user[4] contém a senha (ajuste conforme sua estrutura de tabela)
+        if user and check_password_hash(user['senha'], password):  # Verifica o hash da senha
             # Salvar as informações do usuário na sessão
-            session['user_id'] = user[0]  # ID do usuário (coluna 0)
-            session['user_email'] = user[2]  # Email do usuário (coluna 2)
+            session['user_id'] = user['cod_usuario']  # ID do usuário (ajustado para o nome correto da coluna)
+            session['user_email'] = user['email']  # Email do usuário (ajustado para o nome correto da coluna)
 
             # Redireciona para a página de perfil após login
             return redirect(url_for('perfil'))
@@ -74,6 +82,7 @@ def login():
 # Rota para a página de perfil
 @app.route('/usuarios/perfil')
 def perfil():
+    user_id = session.get('user_id')
     if 'user_id' not in session:
         return redirect(url_for('login'))  # Redireciona para o login se o usuário não estiver logado
 
@@ -83,7 +92,7 @@ def perfil():
     user = cur.fetchone()
     cur.close()
 
-    return render_template('usuarios/perfil.html', user=user)
+    return render_template('usuarios/perfil.html', user=user, user_id=user_id)
     
 #LogOut
 @app.route('/logout')
@@ -97,28 +106,52 @@ def logout():
 #Atualizar dados do usuario
 @app.route('/update/<int:id>', methods=['GET', 'POST'])
 def update(id):
-    cur = mysql.connection.cursor()
+    cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+
+    # Pegue o usuário do banco de dados
     cur.execute("SELECT * FROM usuario WHERE cod_usuario = %s", (id,))
     usuario = cur.fetchone()
 
+    if not usuario:
+        return "Usuário não encontrado", 404
+
+    # Se o formulário for enviado via POST
     if request.method == 'POST':
+        senha_atual = request.form['senha_atual']
         nome = request.form['nome']
         email = request.form['email']
         data_nasc = request.form['data_nasc']
-        senha = request.form['senha']
         cidade = request.form['cidade']
         estado = request.form['estado']
+        
+        # Verifica se a senha atual fornecida corresponde ao hash da senha no banco
+        if not check_password_hash(usuario['senha'], senha_atual):
+            flash("Senha atual incorreta", "error")  # Flash para mensagem de erro
+            return render_template('usuarios/update.html', usuario=usuario)
+        
+        # Se a senha for correta, atualize os dados
+        nova_senha = request.form['nova_senha']
+        if nova_senha:  # Verifica se uma nova senha foi fornecida
+            nova_senha_hash = generate_password_hash(nova_senha)  # Gera o hash da nova senha
+        else:
+            nova_senha_hash = usuario['senha']  # Se não for fornecida nova senha, mantém a antiga
 
-        cur.execute("UPDATE usuario SET nome=%s, email=%s, data_nasc=%s, senha=%s, cidade=%s, estado=%s WHERE cod_usuario=%s",
-                    (nome, email, data_nasc, senha, cidade, estado, id))
+        # Atualiza os dados no banco
+        cur.execute("""
+            UPDATE usuario 
+            SET nome=%s, email=%s, data_nasc=%s, senha=%s, cidade=%s, estado=%s 
+            WHERE cod_usuario=%s
+        """, (nome, email, data_nasc, nova_senha_hash, cidade, estado, id))
 
         mysql.connection.commit()
         cur.close()
 
-        return redirect(url_for('index'))
+        # Após a atualização, redireciona para a página de perfil
+        flash("Perfil atualizado com sucesso!", "success")
+        return redirect(url_for('perfil'))  # Redireciona para a rota do perfil
 
     cur.close()
-    return render_template('update.html', usuario=usuario)
+    return render_template('usuarios/update.html', usuario=usuario)
 
 
 #Pesquisar usuarios

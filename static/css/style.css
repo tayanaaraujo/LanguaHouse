@@ -311,3 +311,36 @@ footer ul a:hover {
   }
 }
 
+/* Perfil */
+/* Estilos para a barra lateral */
+.sidebar {
+  margin-top: 105px; /* Ajuste este valor para controlar a distância */
+  height: 100%;
+  width: 250px;
+  position: fixed; /* Fixa a barra lateral na tela */
+  top: 0;
+  left: 0;
+  background-color: #333;
+  padding-top: 20px;
+}
+
+/* Estilos para os links da barra lateral */
+.sidebar a {
+  padding: 10px 15px;
+  text-decoration: none;
+  font-size: 18px;
+  color: #f1f1f1;
+  display: block;
+}
+
+/* Muda a cor ao passar o mouse */
+.sidebar a:hover {
+  background-color: #575757;
+}
+
+/* Estilos para o conteúdo principal */
+.main-content {
+  margin-left: 260px; /* Espaço para não sobrepor a sidebar */
+  padding: 20px;
+}
+
