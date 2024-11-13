@@ -47,5 +47,11 @@ git fetch origin
 git reset --hard origin/main
 
 
-
+Se perder o arquivo config.py
+DB_CONFIG = {
+    'MYSQL_HOST' : 'BD-ACD',
+    'MYSQL_USER' : 'BD070324137',
+    'MYSQL_PASSWORD' : 'Lamqt1',
+    'MYSQL_DB' : 'BD070324137'
+}
 

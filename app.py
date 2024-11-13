@@ -34,20 +34,28 @@ def create():
         cidade = request.form['cidade']
         estado = request.form['estado']
         
-        # Gerando o hash da senha antes de salvar no banco de dados
-        senha_hash = generate_password_hash(senha)  # Aplica o hash na senha
+        
+        senha_hash = generate_password_hash(senha)  
 
-        # Inserindo o novo usuário com a senha hashada no banco de dados
-        cur = mysql.connection.cursor()
-        cur.execute("""
-            INSERT INTO usuario (nome, email, data_nasc, senha, cidade, estado)
-            VALUES (%s, %s, %s, %s, %s, %s)
-        """, (nome, email, data_nasc, senha_hash, cidade, estado))
-        mysql.connection.commit()
-        cur.close()
+        try:
+            
+            cur = mysql.connection.cursor()
+            cur.execute("""
+                INSERT INTO usuario (nome, email, data_nasc, senha, cidade, estado)
+                VALUES (%s, %s, %s, %s, %s, %s)
+            """, (nome, email, data_nasc, senha_hash, cidade, estado))
+            mysql.connection.commit()
+            cur.close()
 
-        return redirect(url_for('index'))
-    
+            # Flash de mensagem de sucesso
+            flash('Usuário criado com sucesso!', 'success')
+            
+            
+        
+        except Exception as e:
+            flash(f'Erro ao criar usuário: {str(e)}', 'danger')
+            return redirect(url_for('create'))
+
     return render_template('usuarios/create.html')
 
 #Login
