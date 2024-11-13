@@ -95,7 +95,7 @@ def perfil():
         return redirect(url_for('login'))  # Redireciona para o login se o usuário não estiver logado
 
     # Aqui você deve passar o usuário para o template 'perfil.html'
-    cur = mysql.connection.cursor()
+    cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
     cur.execute("SELECT * FROM usuario WHERE cod_usuario = %s", (session['user_id'],))
     user = cur.fetchone()
     cur.close()
@@ -168,9 +168,31 @@ def read():
     return render_template('usuarios/read.html')
 
 #Deletar usuario
-@app.route('/usuarios/login', methods=['GET', 'POST'] )
-def delete_usuario():
-    return render_template('usuarios/delete.html')
+@app.route('/delete/<int:id>', methods=['GET', 'POST'])
+def delete(id):
+    cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+    cur.execute("SELECT * FROM usuario WHERE cod_usuario = %s", (id,))
+    usuario = cur.fetchone()
+
+    if not usuario:
+        return "Usuário não encontrado", 404
+
+    if request.method == 'POST':
+        senha_atual = request.form['senha_atual']
+
+        if not check_password_hash(usuario['senha'], senha_atual):
+            flash("Senha atual incorreta", "error")
+            return render_template('usuarios/delete.html', usuario=usuario)
+
+        cur.execute("DELETE FROM usuario WHERE cod_usuario = %s", (id,))
+        mysql.connection.commit()
+        cur.close()
+
+        flash("Usuário deletado com sucesso", "success")
+        return redirect(url_for('index'))
+
+    return render_template('usuarios/delete.html', usuario=usuario)
+
 
 #Forum grupos
 @app.route('/grupos/forum', methods=['GET', 'POST'] )

@@ -24,17 +24,17 @@
         <a href="#home">Home</a>
         <a href="#about">Sobre</a>
         <a href="#services">ff</a>
-        <a href="{{ url_for('update', id=user_id) }}">Atualizar Perfil</a> <!-- Nova opção adicionada -->
-        <a href="{{ url_for('delete_usuario')}}">Deletar Conta</a>
+        <a href="{{ url_for('update', id=user_id) }}">Atualizar Perfil</a> 
+        <a href="{{ url_for('delete', id=user['cod_usuario']) }}">Deletar Conta</a>
     </div>
 
     <div class="main-content">
         <h2 class="mt-5">Perfil do Usuário</h2>
-        <p><strong>Nome:</strong> {{ user[1] }}</p>
-        <p><strong>E-mail:</strong> {{ user[2] }}</p>
-        <p><strong>Data de Nascimento:</strong> {{ user[3] }}</p>
-        <p><strong>Cidade:</strong> {{ user[5] }}</p>
-        <p><strong>Estado:</strong> {{ user[6] }}</p>
+            <p><strong>Nome:</strong> {{ user['nome'] }}</p>
+            <p><strong>E-mail:</strong> {{ user['email'] }}</p>
+            <p><strong>Data de Nascimento:</strong> {{ user['data_nasc'] }}</p>
+            <p><strong>Cidade:</strong> {{ user['cidade'] }}</p>
+            <p><strong>Estado:</strong> {{ user['estado'] }}</p>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
