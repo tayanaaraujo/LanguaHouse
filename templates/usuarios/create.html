@@ -1,43 +1,75 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-     <!-- Bootstrap CSS -->
-     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-     <link rel="stylesheet" href="/static/css/style.css">
-    <title>Cadastar Usuário</title>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <title>Cadastro - LanguaHouse</title>
 </head>
 
-<body>
+<body class="bg-gray-100">
 
-    <div class="container">
-        <nav class="navbar navbar-expand-lg navbar-light bg-light">
-          <div class="container-fluid">
-            <a class="navbar-brand" href="{{ url_for('index') }}">LanguaHouse</a>
-            <a class="navbar-brand" href="{{ url_for('login') }}"> Login</a>
-          </div>
-        </nav>
-    </div>
+    <!-- Navbar -->
+    <nav class="bg-white shadow-md py-4">
+        <div class="max-w-7xl mx-auto px-6 flex justify-between items-center">
+            <a href="{{ url_for('index') }}" class="text-2xl font-semibold text-purple-600">LanguaHouse</a>
+            <a href="{{ url_for('login') }}" class="text-lg text-purple-600 hover:text-purple-800 transition duration-300">Login</a>
+        </div>
+    </nav>
 
-    <div class="container">
-        <h1>Cadastro</h1>
+    <!-- Formulário de Cadastro -->
+    <div class="max-w-2xl mx-auto mt-12 p-8 bg-white rounded-lg shadow-lg">
+        <h1 class="text-3xl font-semibold text-center text-gray-800 mb-6">Cadastro</h1>
+       
         <form method="POST">
-            Nome: <input type="text" name="nome" required><br>
-            Email: <input type="email" name="email" required><br>
-            Data de Nascimento: <input type="date" name="data_nasc" required><br>
-            Senha: <input type="password" name="senha" required><br>
-            Cidade: <input type="text" name="cidade" required><br>
-            Estado: <input type="text" name="estado" required><br>
-            <input type="submit" value="Criar">
+            <!-- Nome -->
+            <div class="mb-4">
+                <label for="nome" class="block text-lg font-medium text-gray-700">Nome</label>
+                <input type="text" name="nome" id="nome" class="w-full px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500" required placeholder="Digite seu nome">
+            </div>
+           
+            <!-- E-mail -->
+            <div class="mb-4">
+                <label for="email" class="block text-lg font-medium text-gray-700">E-mail</label>
+                <input type="email" name="email" id="email" class="w-full px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500" required placeholder="Digite seu e-mail">
+            </div>
+
+            <!-- Data de Nascimento -->
+            <div class="mb-4">
+                <label for="data_nasc" class="block text-lg font-medium text-gray-700">Data de Nascimento</label>
+                <input type="date" name="data_nasc" id="data_nasc" class="w-full px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500" required>
+            </div>
+
+            <!-- Senha -->
+            <div class="mb-4">
+                <label for="senha" class="block text-lg font-medium text-gray-700">Senha</label>
+                <input type="password" name="senha" id="senha" class="w-full px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500" required placeholder="Digite sua senha">
+            </div>
+
+            <!-- Cidade -->
+            <div class="mb-4">
+                <label for="cidade" class="block text-lg font-medium text-gray-700">Cidade</label>
+                <input type="text" name="cidade" id="cidade" class="w-full px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500" required placeholder="Digite sua cidade">
+            </div>
+
+            <!-- Estado -->
+            <div class="mb-6">
+                <label for="estado" class="block text-lg font-medium text-gray-700">Estado</label>
+                <input type="text" name="estado" id="estado" class="w-full px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500" required placeholder="Digite seu estado">
+            </div>
+
+            <!-- Botão de Enviar -->
+            <button type="submit" class="w-full py-3 bg-purple-600 text-white font-semibold rounded-md hover:bg-purple-700 transition duration-300">Criar Conta</button>
         </form>
+
+        <!-- Link para voltar -->
+        <div class="mt-6 text-center">
+            <a href="{{ url_for('index') }}" class="text-purple-600 hover:text-purple-800 transition duration-300">Voltar</a>
+        </div>
     </div>
-
-    <a href="{{ url_for('index') }}">Voltar</a>
-
-
-    
-
 
     {% with messages = get_flashed_messages(with_categories=true) %}
     {% if messages %}
@@ -51,34 +83,6 @@
     {% endif %}
   {% endwith %}
   
-  
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
 
     <!-- Option 2: Separate Popper and Bootstrap JS -->
