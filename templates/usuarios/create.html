@@ -69,7 +69,27 @@
         <div class="mt-6 text-center">
             <a href="{{ url_for('index') }}" class="text-purple-600 hover:text-purple-800 transition duration-300">Voltar</a>
         </div>
+
+        <br><br><br>
+        <!-- Mensagem de sucesso ou falha ao cadastrar -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+        <div class="space-y-4"> <!-- Espaçamento entre as mensagens -->
+            {% for category, message in messages %}
+            <div 
+                class="px-4 py-3 rounded-md text-white 
+                        {{ 'bg-green-500' if category == 'success' else 'bg-red-500' }}">
+                {{ message }}
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+        {% endwith %}
     </div>
+
+    
+    
+
 
     <!-- Rodapé -->
     <footer class="bg-gray-100 py-4 mt-12">
@@ -79,17 +99,7 @@
       </div>
   </footer>
 
-    {% with messages = get_flashed_messages(with_categories=true) %}
-    {% if messages %}
-      <div class="flash-messages">
-        {% for category, message in messages %}
-          <div class="alert alert-{{ 'success' if category == 'success' else 'danger' }}">
-            {{ message }}
-          </div>
-        {% endfor %}
-      </div>
-    {% endif %}
-  {% endwith %}
+
   
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
 

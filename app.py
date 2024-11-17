@@ -200,9 +200,53 @@ def forum():
     return render_template('/grupos/forum.html')
 
 #Idiomas
-@app.route('/idiomas/cadastro', methods=['GET', 'POST'] )
-def cad_idioma():
+@app.route('/idiomas/cadastro/<int:id>', methods=['GET', 'POST'] )
+def cad_idioma(id):
+    cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+
+    # Verificar se o usuário existe
+    cur.execute("SELECT * FROM usuario WHERE cod_usuario = %s", (id,))
+    usuario = cur.fetchone()
+
+    if not usuario:
+        flash('Usuário não encontrado.', 'danger')
+        return redirect(url_for('some_other_route'))  # Redirecione para uma rota apropriada
+
+    if request.method == 'POST':
+        linguagem = request.form['linguagem']
+        nivel = request.form['nivel']
+        categoria = request.form['categoria']
+        cod_usuario = id
+
+        try:
+            # Verificar duplicidade
+            cur.execute("""
+                SELECT * FROM idioma 
+                WHERE cod_usuario = %s AND linguagem = %s
+            """, (cod_usuario, linguagem))
+            idioma_existente = cur.fetchone()
+
+            if idioma_existente:
+                flash('Este idioma já foi cadastrado para o usuário.', 'warning')
+                return redirect(url_for('cad_idioma', id=id))
+
+            # Inserir novo idioma
+            cur.execute("""
+                INSERT INTO idioma (cod_usuario, nivel, linguagem, categoria)
+                VALUES (%s, %s, %s, %s)
+            """, (cod_usuario, nivel, linguagem, categoria))
+            mysql.connection.commit()
+
+            flash('Idioma cadastrado com sucesso!', 'success')
+        except Exception as e:
+            mysql.connection.rollback()
+            flash(f'Erro ao cadastrar idioma: {str(e)}', 'danger')
+        finally:
+            cur.close()
+            return redirect(url_for('cad_idioma', id=id))
+
     return render_template('idiomas/cadastro_idioma.html')
+
 
 
 if __name__ == '__main__':
