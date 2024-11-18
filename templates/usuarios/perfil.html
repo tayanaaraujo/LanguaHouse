@@ -24,6 +24,8 @@
         <a href="#home">Home</a>
         <a href="#about">Sobre</a>
         <a href="{{ url_for('cad_idioma', id=user['cod_usuario']) }}">Idioma</a>
+        <a href="{{ url_for('atual_idioma', id=user['cod_usuario'])}}" >Atualizar Idioma</a>
+        <a href="{{ url_for('del_idioma', id=user['cod_usuario']) }}">Deletar Idioma</a>
         <a href="{{ url_for('update', id=user_id) }}">Atualizar Perfil</a> 
         <a href="{{ url_for('delete', id=user['cod_usuario']) }}">Deletar Conta</a>
     </div>

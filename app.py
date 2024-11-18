@@ -247,6 +247,70 @@ def cad_idioma(id):
 
     return render_template('idiomas/cadastro_idioma.html')
 
+@app.route('/idiomas/deletar/<int:id>', methods=['GET', 'POST'] )
+def del_idioma(id):
+    cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+    cur.execute("SELECT * FROM idioma WHERE cod_usuario = %s", (id,))
+    usuario = cur.fetchone()
+
+    if not usuario:
+        return "Usuário não encontrado", 404
+
+
+
+    return render_template('/idiomas/deletar_idioma.html')
+
+@app.route('/idiomas/atualizar/<int:id>', methods=['GET', 'POST'])
+def atual_idioma(id):
+    cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+
+    # Verificar se o idioma pertence ao usuário
+    cur.execute("""
+        SELECT i.* 
+        FROM idioma i
+        LEFT JOIN usuario u ON i.cod_usuario = u.cod_usuario
+        WHERE i.cod_usuario = %s
+    """, (id,))
+    idioma = cur.fetchone()
+
+    if not idioma:
+        flash('O idioma não está associado a este usuário.', 'danger')
+        return redirect(url_for('perfil', id=id))
+
+    # Carregar o usuário
+    cur.execute("SELECT * FROM usuario WHERE cod_usuario = %s", (id,))
+    usuario = cur.fetchall()
+
+    if not usuario:
+        flash('Usuário não encontrado.', 'danger')
+        return redirect(url_for('perfil', id=id))
+
+    if request.method == 'POST':
+        nivel = request.form['nivel']
+        linguagem = request.form['linguagem']
+        categoria = request.form['categoria']
+
+        try:
+            # Atualizar idioma
+            # Atualizando o idioma onde o cod_idioma e cod_usuario correspondem
+            cur.execute("""
+                UPDATE idioma 
+                SET nivel = %s, linguagem = %s, categoria = %s
+                WHERE cod_idioma = %s AND cod_usuario = %s
+            """, (nivel, linguagem, categoria, idioma['cod_idioma'], id))
+            mysql.connection.commit()
+
+            flash('Idioma atualizado com sucesso!', 'success')
+        except Exception as e:
+            mysql.connection.rollback()
+            flash(f'Erro ao atualizar idioma: {str(e)}', 'danger')
+        finally:
+            cur.close()
+            return redirect(url_for('atual_idioma', id=id))
+
+    # Passando as variáveis 'usuario' e 'idioma' para o template
+    return render_template('idiomas/atualizar_idioma.html', usuario=usuario, idioma=idioma)
+
 
 
 if __name__ == '__main__':
