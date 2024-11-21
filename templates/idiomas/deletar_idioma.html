@@ -22,30 +22,31 @@
          
       </div>
     </nav>
-
-
+  
      <!-- Formulário de Cadastro -->
      <div class="max-w-2xl mx-auto mt-12 p-8 bg-white rounded-lg shadow-lg">
         <h1 class="text-3xl font-semibold text-center text-gray-800 mb-6">Idioma</h1>
        
-        <form method="POST">
-             
-           
+        <form method="POST" action="{{ url_for('delete_idioma', id=usuario['cod_usuario']) }}">
+    
             <!-- Linguagem --> 
             <div class="mb-4">
                 <label for="linguagem" class="block text-lg font-medium text-gray-700">Linguagem</label>
                 <select name="linguagem" id="linguagem" 
-                    class="w-full px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500">
+                    required class="w-full px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500">
                     <option value="">Selecione um linguagem</option>
                     <option value="ingles">Inglês</option>
                     <option value="espanhol">Espanhol</option>
                 </select>
             </div>
 
-            
+            <label class="block text-lg font-medium text-gray-700">Confirme sua senha</label>
+              <div class="mb-3">
+                <input type="password" id="senha_atual" name="senha_atual" class="w-full px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500" required>
+              </div>
 
             <!-- Botão de Enviar -->
-            <button type="submit" class="w-full py-3 bg-purple-600 text-white font-semibold rounded-md hover:bg-purple-700 transition duration-300">Cadastrar Idioma</button>
+            <button type="submit" class="w-full py-3 bg-purple-600 text-white font-semibold rounded-md hover:bg-purple-700 transition duration-300">Excluir Idioma</button>
         </form>
 
         <!-- Link para voltar -->
@@ -54,17 +55,21 @@
         </div>
 
         <br><br><br>
-        
+        {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+        <div class="mb-4">
+            {% for category, message in messages %}
+            <div 
+                class="px-4 py-3 rounded-md text-white 
+                    {{ 'bg-green-500' if category == 'success' else 'bg-red-500' }}">
+                {{ message }}
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+        {% endwith %}
     </div>
-    
- 
-    
-
-
-
-
-
-
+  
          <!-- Rodapé -->
     <footer class="bg-gray-100 py-4 mt-12">
         <div class="text-center text-gray-600">

@@ -247,34 +247,22 @@ def cad_idioma(id):
 
     return render_template('idiomas/cadastro_idioma.html')
 
-@app.route('/idiomas/deletar/<int:id>', methods=['GET', 'POST'] )
-def del_idioma(id):
-    cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-    cur.execute("SELECT * FROM idioma WHERE cod_usuario = %s", (id,))
-    usuario = cur.fetchone()
-
-    if not usuario:
-        return "Usuário não encontrado", 404
-
-
-
-    return render_template('/idiomas/deletar_idioma.html')
-
+#ATUALIZAR IDIOMA
 @app.route('/idiomas/atualizar/<int:id>', methods=['GET', 'POST'])
 def atual_idioma(id):
     cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
 
-    # Verificar se o idioma pertence ao usuário
+    # Verificar se o idioma pertence ao usuário (usando a coluna 'linguagem' para identificar)
     cur.execute("""
         SELECT i.* 
         FROM idioma i
         LEFT JOIN usuario u ON i.cod_usuario = u.cod_usuario
         WHERE i.cod_usuario = %s
     """, (id,))
-    idioma = cur.fetchone()
+    idioma = cur.fetchall()  # Pega todos os idiomas do usuário
 
     if not idioma:
-        flash('O idioma não está associado a este usuário.', 'danger')
+        flash('Nenhum idioma encontrado para este usuário.', 'danger')
         return redirect(url_for('perfil', id=id))
 
     # Carregar o usuário
@@ -289,15 +277,27 @@ def atual_idioma(id):
         nivel = request.form['nivel']
         linguagem = request.form['linguagem']
         categoria = request.form['categoria']
+        linguagem_selecionada = request.form['linguagem']  # Linguagem específica que o usuário selecionou para atualizar
 
         try:
+            # Verificar se o idioma e a linguagem já estão cadastrados para o usuário
+            cur.execute("""
+                SELECT * 
+                FROM idioma 
+                WHERE cod_usuario = %s AND linguagem = %s
+            """, (id, linguagem_selecionada))  # Verificando pela 'linguagem'
+            idioma_existente = cur.fetchone()
+
+            if not idioma_existente:
+                flash('Idioma ou linguagem não encontrado para este usuário.', 'danger')
+                return redirect(url_for('atual_idioma', id=id))
+
             # Atualizar idioma
-            # Atualizando o idioma onde o cod_idioma e cod_usuario correspondem
             cur.execute("""
                 UPDATE idioma 
                 SET nivel = %s, linguagem = %s, categoria = %s
-                WHERE cod_idioma = %s AND cod_usuario = %s
-            """, (nivel, linguagem, categoria, idioma['cod_idioma'], id))
+                WHERE cod_usuario = %s AND linguagem = %s
+            """, (nivel, linguagem, categoria, id, linguagem_selecionada))
             mysql.connection.commit()
 
             flash('Idioma atualizado com sucesso!', 'success')
@@ -308,9 +308,34 @@ def atual_idioma(id):
             cur.close()
             return redirect(url_for('atual_idioma', id=id))
 
-    # Passando as variáveis 'usuario' e 'idioma' para o template
+    # Passando as variáveis 'usuario' e 'idiomas' para o template
     return render_template('idiomas/atualizar_idioma.html', usuario=usuario, idioma=idioma)
 
+#Deletar 
+@app.route('/delete_idioma/<int:id>', methods=['GET', 'POST'])
+def delete_idioma(id):
+    cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+    cur.execute("SELECT * FROM usuario WHERE cod_usuario = %s", (id,))
+    usuario = cur.fetchone()
+
+    if not usuario:
+        return "Usuário não encontrado", 404
+
+    if request.method == 'POST':
+        linguagem = request.form['linguagem']
+        senha_atual = request.form['senha_atual']
+
+        if not check_password_hash(usuario['senha'], senha_atual):
+            flash("Senha atual incorreta", "error")
+            return render_template('usuarios/delete.html', usuario=usuario)
+
+        cur.execute("DELETE FROM idioma WHERE cod_usuario = %s AND linguagem = %s", (id, linguagem))
+        mysql.connection.commit()
+        cur.close()
+
+        flash("Idioma deletado com sucesso", "success")
+
+    return render_template('idiomas/deletar_idioma.html', usuario=usuario)
 
 
 if __name__ == '__main__':
