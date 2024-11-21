@@ -197,7 +197,18 @@ def delete(id):
 #Forum grupos
 @app.route('/grupos/forum', methods=['GET', 'POST'] )
 def forum():
-    return render_template('/grupos/forum.html')
+    return render_template('grupos/forum.html')
+
+# CAMINHOS DO FORUM 
+@app.route('/mensagens')
+def mensagens():
+    # Lógica para mostrar as mensagens
+    return render_template('mensagens.html')
+
+@app.route('/notificações')
+def notificações():
+    # Lógica para mostrar as notificações
+    return render_template('notificações.html')
 
 #Idiomas
 @app.route('/idiomas/cadastro/<int:id>', methods=['GET', 'POST'] )
