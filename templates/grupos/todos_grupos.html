@@ -50,10 +50,10 @@
         
         <!-- Aba Início -->
             <section id="inicio" class="space-y-6">
-            <h2 class="text-2xl font-semibold text-gray-800">Bem-vindo</h2>
+            <h2 class="text-2xl font-semibold text-gray-800">Grupos</h2>
 
         <!-- Campo de Busca -->
-            <form action="{{ url_for('forum') }}" method="GET" class="relative mt-4">
+            <form action="{{ url_for('todos_grupos', id = usuario['cod_usuario']) }}" method="GET" class="relative mt-4">
                 <input type="text" name="query" placeholder="Buscar pessoas..." 
                     class="w-full px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500"
                     value="{{ request.args.get('query', '') }}">
@@ -65,21 +65,21 @@
 
         <!-- Exibir Resultados da Busca -->
         <section id="resultados" class="mt-6">
-            {% if usuarios %}
+            {% if grupos %}
                 <h3 class="text-xl font-semibold">Resultados da Busca:</h3>
                 <ul class="mt-4">
-                    {% for usuario in usuarios %}
+                    {% for grupo in grupos %}
                         <li class="py-2">
-                            <strong>{{ usuario.nome }}</strong> - {{ usuario.email }}
-                            <a href="{{ url_for('perfil', id=usuario.cod_usuario) }}" class="text-blue-500">Ver perfil</a>
+                            <strong>{{ grupo.nome_grupo }}</strong> - {{ grupo.linguagem }}
+                            
                         </li>
                     {% endfor %}
                 </ul>
             {% else %}
                 {% if query %}
-                    <p class="text-gray-600">Nenhum usuário encontrado para "{{ query }}".</p>
+                    <p class="text-gray-600">Nenhum grupo encontrado encontrado para "{{ query }}".</p>
                 {% else %}
-                    <p class="text-gray-600">Pesquise por um nome ou email de usuário.</p>
+                    <p class="text-gray-600">Pesquise pelo nome ou o idioma.</p>
                 {% endif %}
             {% endif %}
         </section>
@@ -157,13 +157,6 @@
             </div>
         </section>
     </div>
-
-
-
-
-
-
-
 
 </body>
 </html>

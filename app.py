@@ -407,7 +407,7 @@ def forum():
 
 
 #Grupos
-@app.route('/grupos/todos_grupos/<int:id>', methods=['GET'])
+@app.route('/grupos/todos_grupos/<int:id>', methods=['GET', 'POST'])
 def todos_grupos(id):
     cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
 
@@ -418,9 +418,20 @@ def todos_grupos(id):
         flash('Usuário não encontrado.', 'danger')
         return redirect(url_for('index'))  
     
+    query = request.args.get('query', '')  # Pega o parâmetro da query, se houver
+
+    # Se a busca não estiver vazia, buscar no banco de dados
+    if query:
+        cur.execute("""
+            SELECT * FROM grupo
+            WHERE nome_grupo LIKE %s OR linguagem LIKE %s
+        """, ('%' + query + '%', '%' + query + '%'))
+    else:
+        cur.execute("SELECT * FROM grupo")  # Caso contrário, traz todos os usuários
+    grupos = cur.fetchall()
     cur.close()
 
-    return render_template('grupos/todos_grupos.html', usuario=usuario)
+    return render_template('grupos/todos_grupos.html', usuario=usuario, grupos=grupos)
 
 if __name__ == '__main__':
     app.run(debug=True)
