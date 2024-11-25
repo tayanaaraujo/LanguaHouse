@@ -373,10 +373,17 @@ def delete_idioma(id):
 #Busca de Usuários
 @app.route('/grupos/forum', methods=['GET'])
 def forum():
-    query = request.args.get('query', '')  # Pega o parâmetro da query, se houver
+
+    user_id = session.get('user_id')
+    if 'user_id' not in session:
+        return redirect(url_for('login'))  # Redireciona para o login se o usuário não estiver logado
 
     # Conectar ao banco de dados
     cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+
+     
+
+    query = request.args.get('query', '')  # Pega o parâmetro da query, se houver
 
     # Se a busca não estiver vazia, buscar no banco de dados
     if query:
@@ -391,8 +398,23 @@ def forum():
     cur.close()
 
     # Retorna a página do fórum com os resultados da pesquisa
-    return render_template('grupos/forum.html', usuarios=usuarios, query=query)
+    return render_template('grupos/forum.html', usuarios=usuarios, query=query, 
+                           user_id=user_id)
 
+@app.route('/grupos/todos_grupos/<int:id>', methods=['GET'])
+def todos_grupos(id):
+    cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+
+    cur.execute("SELECT * FROM usuario WHERE cod_usuario = %s", (id,))
+    usuario = cur.fetchone()
+
+    if not usuario:
+        flash('Usuário não encontrado.', 'danger')
+        return redirect(url_for('index'))  
+    
+    cur.close()
+
+    return render_template('grupos/todos_grupos.html', usuario=usuario)
 
 if __name__ == '__main__':
     app.run(debug=True)
