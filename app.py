@@ -193,7 +193,6 @@ def delete(id):
 
     return render_template('usuarios/delete.html', usuario=usuario)
 
-
 #Forum grupos
 @app.route('/grupos/forum', methods=['GET', 'POST'] )
 def forum():
@@ -211,6 +210,34 @@ def notificações():
     return render_template('notificações.html')
 
 #Idiomas
+@app.route('/idiomas/<int:id>', methods=['GET', 'POST'] )
+def perfil_idioma(id):
+    cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+
+    cur.execute("SELECT * FROM usuario WHERE cod_usuario = %s", (id,))
+    usuario = cur.fetchone()
+
+    if not usuario:
+        flash('Usuário não encontrado.', 'danger')
+        return redirect(url_for('perfil'))  # Redirecione para uma rota apropriada
+    
+    # Verificar se o idioma pertence ao usuário (usando a coluna 'linguagem' para identificar)
+    cur.execute("""
+        SELECT i.* 
+        FROM idioma i
+        LEFT JOIN usuario u ON i.cod_usuario = u.cod_usuario
+        WHERE i.cod_usuario = %s
+    """, (id,))
+    idioma = cur.fetchall()  # Pega todos os idiomas do usuário
+
+    if not idioma:
+        flash('Nenhum idioma encontrado para este usuário.', 'danger')
+        return redirect(url_for('perfil_idioma', id=id))
+    
+    cur.close()
+
+    return render_template('idiomas/idioma_perfil.html', id=id, usuario = usuario)
+
 @app.route('/idiomas/cadastro/<int:id>', methods=['GET', 'POST'] )
 def cad_idioma(id):
     cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
@@ -221,7 +248,7 @@ def cad_idioma(id):
 
     if not usuario:
         flash('Usuário não encontrado.', 'danger')
-        return redirect(url_for('some_other_route'))  # Redirecione para uma rota apropriada
+        return redirect(url_for('perfil'))  # Redirecione para uma rota apropriada
 
     if request.method == 'POST':
         linguagem = request.form['linguagem']
