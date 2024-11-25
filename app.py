@@ -433,5 +433,53 @@ def todos_grupos(id):
 
     return render_template('grupos/todos_grupos.html', usuario=usuario, grupos=grupos)
 
+@app.route('/grupos/cadastro_grupo/<int:id>', methods=['GET', 'POST'])
+def cad_grupos(id):
+    cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+
+    # Busca o usuário
+    cur.execute("SELECT * FROM usuario WHERE cod_usuario = %s", (id,))
+    usuario = cur.fetchone()
+
+    if not usuario:
+        flash('Usuário não encontrado.', 'danger')
+        return redirect(url_for('index'))
+
+    if request.method == 'POST':
+        cod_usuario = id
+        nome_grupo = request.form['nome_grupo']
+        linguagem = request.form['linguagem']
+        descricao = request.form['descricao']
+
+        try:
+            # Verificar duplicidade na tabela idioma
+            cur.execute("""
+                SELECT cod_idioma FROM idioma 
+                WHERE cod_usuario = %s AND linguagem = %s
+            """, (cod_usuario, linguagem))
+            idioma_existente = cur.fetchone()
+
+            if not idioma_existente:
+                flash('Idioma não encontrado para este usuário.', 'danger')
+                return redirect(url_for('cad_grupos', id=id))
+
+            # Inserir novo grupo
+            cur.execute("""
+                INSERT INTO grupo (cod_usuario, cod_idioma, nome_grupo, linguagem, descricao)
+                VALUES (%s, %s, %s, %s, %s)
+            """, (cod_usuario, idioma_existente['cod_idioma'], nome_grupo, linguagem, descricao))
+            mysql.connection.commit()
+
+            flash('Grupo cadastrado com sucesso!', 'success')
+        except Exception as e:
+            mysql.connection.rollback()
+            flash(f'Erro ao cadastrar grupo: {str(e)}', 'danger')
+        finally:
+            cur.close()
+            return redirect(url_for('cad_grupos', id=id))
+
+    return render_template('grupos/cadastro_grupo.html', usuario=usuario)
+
+
 if __name__ == '__main__':
     app.run(debug=True)
