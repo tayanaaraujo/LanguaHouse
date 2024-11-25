@@ -79,7 +79,7 @@ def login():
             session['user_email'] = user['email']  # Email do usuário (ajustado para o nome correto da coluna)
 
             # Redireciona para a página de perfil após login
-            return redirect(url_for('perfil'))
+            return redirect(url_for('forum'))
         else:
             # Se a autenticação falhar
             flash('E-mail ou senha inválidos. Tente novamente.', 'error')
@@ -193,11 +193,6 @@ def delete(id):
 
     return render_template('usuarios/delete.html', usuario=usuario)
 
-#Forum grupos
-@app.route('/grupos/forum', methods=['GET', 'POST'] )
-def forum():
-    return render_template('grupos/forum.html')
-
 # CAMINHOS DO FORUM 
 @app.route('/mensagens')
 def mensagens():
@@ -219,7 +214,7 @@ def perfil_idioma(id):
 
     if not usuario:
         flash('Usuário não encontrado.', 'danger')
-        return redirect(url_for('perfil'))  # Redirecione para uma rota apropriada
+        return redirect(url_for('perfil'))  
     
     # Verificar se o idioma pertence ao usuário (usando a coluna 'linguagem' para identificar)
     cur.execute("""
@@ -236,7 +231,7 @@ def perfil_idioma(id):
     
     cur.close()
 
-    return render_template('idiomas/idioma_perfil.html', id=id, usuario = usuario)
+    return render_template('idiomas/idioma_perfil.html', usuario=usuario, idioma=idioma)
 
 @app.route('/idiomas/cadastro/<int:id>', methods=['GET', 'POST'] )
 def cad_idioma(id):
@@ -374,6 +369,29 @@ def delete_idioma(id):
         flash("Idioma deletado com sucesso", "success")
 
     return render_template('idiomas/deletar_idioma.html', usuario=usuario)
+
+#Busca de Usuários
+@app.route('/grupos/forum', methods=['GET'])
+def forum():
+    query = request.args.get('query', '')  # Pega o parâmetro da query, se houver
+
+    # Conectar ao banco de dados
+    cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+
+    # Se a busca não estiver vazia, buscar no banco de dados
+    if query:
+        cur.execute("""
+            SELECT * FROM usuario
+            WHERE nome LIKE %s OR email LIKE %s
+        """, ('%' + query + '%', '%' + query + '%'))
+    else:
+        cur.execute("SELECT * FROM usuario")  # Caso contrário, traz todos os usuários
+
+    usuarios = cur.fetchall()
+    cur.close()
+
+    # Retorna a página do fórum com os resultados da pesquisa
+    return render_template('grupos/forum.html', usuarios=usuarios, query=query)
 
 
 if __name__ == '__main__':
