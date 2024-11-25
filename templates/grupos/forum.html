@@ -49,8 +49,15 @@
             <div class="max-w-5xl mx-auto mt-10 p-6 bg-white rounded-lg shadow-lg">
         
         <!-- Aba Início -->
-            <section id="inicio" class="space-y-6">
-            <h2 class="text-2xl font-semibold text-gray-800">Bem-vindo</h2>
+            <section id="inicio" class="tab-content space-y-6">
+                <h2 class="text-2xl font-semibold text-gray-800">
+                    {% if usuario_logado %}
+                        Bem-vindo, {{ usuario_logado['nome'] }}!
+                    {% else %}
+                        Bem-vindo, visitante!
+                    {% endif %}
+                </h2>
+            </section>
 
         <!-- Campo de Busca -->
             <form action="{{ url_for('forum') }}" method="GET" class="relative mt-4">
