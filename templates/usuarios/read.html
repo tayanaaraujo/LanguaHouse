@@ -1,39 +1,42 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-br">
 <head>
-   <!-- Required meta tags -->
-   <meta charset="utf-8">
-   <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-   <!-- Bootstrap CSS -->
-   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-   <link rel="stylesheet" href="/static/css/style.css">
-   <title> Procurar usuarios </title>
-</head>
-<body>
-    <div class="container">
-        <nav class="navbar navbar-expand-lg navbar-light bg-light">
-          <div class="container-fluid">
-            <a class="navbar-brand" href="{{ url_for('index') }}">LanguaHouse</a>
-            <a class="navbar-brand" href="{{ url_for('login') }}"> Login</a>
-          </div>
-        </nav>
-    </div>
-    
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com"></script>
+<!-- Font Awesome para ícones -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 
+<!-- Campo de Busca -->
+<form action="{{ url_for('read') }}" method="GET" class="relative mt-4">
+  <input type="text" name="query" placeholder="Buscar pessoas..." 
+      class="w-full px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500"
+      value="{{ request.args.get('query', '') }}">
+  <button type="submit" class="absolute right-3 top-3 text-purple-600 hover:text-purple-800">
+      <i class="fas fa-search"></i>
+  </button>
+</form>
+</section>
 
-
-
-
-    
-
-    
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
-
-    <!-- Option 2: Separate Popper and Bootstrap JS -->
-    <!--
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
-    -->
-</body>
-</html>
+<!-- Exibir Resultados da Busca -->
+<section id="resultados" class="mt-6">
+{% if usuarios %}
+  <h3 class="text-xl font-semibold">Resultados da Busca:</h3>
+  <ul class="mt-4">
+      {% for usuario in usuarios %}
+          <li class="py-2">
+              <strong>{{ usuario.nome }}</strong> - {{ usuario.email }}
+              <a href="{{ url_for('perfil', id=usuario.cod_usuario) }}" class="text-blue-500">Ver perfil</a>
+          </li>
+      {% endfor %}
+  </ul>
+{% else %}
+  {% if query %}
+      <p class="text-gray-600">Nenhum usuário encontrado para "{{ query }}".</p>
+  {% else %}
+      <p class="text-gray-600">Pesquise por um nome ou email de usuário.</p>
+  {% endif %}
+{% endif %}
+</section>

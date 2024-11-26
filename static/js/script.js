@@ -28,3 +28,4 @@ function validateLogin(event) {
         document.querySelector('form').submit();
     }
 }
+

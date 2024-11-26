@@ -23,7 +23,7 @@ app.secret_key = '9b4e5417c43ff5c1d2168b1677b1957e'
 def index():
     return render_template('index.html')
 
-#Cadastro
+#Cadastro usuário
 @app.route('/usuarios/', methods=['GET', 'POST'])
 def create():
     if request.method == 'POST':
@@ -50,15 +50,13 @@ def create():
             # Flash de mensagem de sucesso
             flash('Usuário criado com sucesso!', 'success')
             
-            
-        
         except Exception as e:
             flash(f'Erro ao criar usuário: {str(e)}', 'danger')
             return redirect(url_for('create'))
 
     return render_template('usuarios/create.html')
 
-#Login
+#Login usuario
 @app.route('/usuarios/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
@@ -92,9 +90,8 @@ def login():
 def perfil():
     user_id = session.get('user_id')
     if 'user_id' not in session:
-        return redirect(url_for('login'))  # Redireciona para o login se o usuário não estiver logado
+        return redirect(url_for('login'))  
 
-    # Aqui você deve passar o usuário para o template 'perfil.html'
     cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
     cur.execute("SELECT * FROM usuario WHERE cod_usuario = %s", (session['user_id'],))
     user = cur.fetchone()
@@ -108,15 +105,45 @@ def logout():
     # Remove informações da sessão para efetuar o logout
     session.pop('user_id', None)
     session.pop('user_email', None)
-    # Redireciona para a página de login após o logout
     return redirect(url_for('index'))
+
+#Pesquisar usuarios
+@app.route('/usuarios/read', methods=['GET', 'POST'])
+def read():
+    # Verifica se o usuário está logado
+    if 'user_id' not in session:
+        return redirect(url_for('login'))  
+
+    user_id = session['user_id']
+    cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+    
+    # Obtém os dados do usuário logado
+    cur.execute("SELECT * FROM usuario WHERE cod_usuario = %s", (user_id,))
+    user = cur.fetchone()
+
+    # Lida com a pesquisa
+    search_query = request.args.get('search', '')  # Obtém o termo de pesquisa do campo de busca
+    if search_query:
+        # Filtra os usuários por categoria
+        cur.execute("""
+            SELECT * FROM usuario
+            WHERE nome LIKE %s OR email LIKE %s JOIN idioma WHERE categoria LIKE %s
+        """, (f"%{search_query}%", f"%{search_query}%"))
+    else:
+        # Retorna todos os usuários se não houver pesquisa
+        cur.execute("SELECT * FROM usuario")
+    
+    users = cur.fetchall()  # Recupera os resultados da consulta
+    cur.close()
+
+    # Renderiza a página com os usuários e o termo de pesquisa
+    return render_template('usuarios/read.html', user=user, users=users, search_query=search_query)
 
 #Atualizar dados do usuario
 @app.route('/update/<int:id>', methods=['GET', 'POST'])
 def update(id):
     cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
 
-    # Pegue o usuário do banco de dados
     cur.execute("SELECT * FROM usuario WHERE cod_usuario = %s", (id,))
     usuario = cur.fetchone()
 
@@ -134,15 +161,15 @@ def update(id):
         
         # Verifica se a senha atual fornecida corresponde ao hash da senha no banco
         if not check_password_hash(usuario['senha'], senha_atual):
-            flash("Senha atual incorreta", "error")  # Flash para mensagem de erro
+            flash("Senha atual incorreta", "error")  
             return render_template('usuarios/update.html', usuario=usuario)
         
         # Se a senha for correta, atualize os dados
         nova_senha = request.form['nova_senha']
-        if nova_senha:  # Verifica se uma nova senha foi fornecida
+        if nova_senha:  
             nova_senha_hash = generate_password_hash(nova_senha)  # Gera o hash da nova senha
         else:
-            nova_senha_hash = usuario['senha']  # Se não for fornecida nova senha, mantém a antiga
+            nova_senha_hash = usuario['senha']  
 
         # Atualiza os dados no banco
         cur.execute("""
@@ -154,18 +181,11 @@ def update(id):
         mysql.connection.commit()
         cur.close()
 
-        # Após a atualização, redireciona para a página de perfil
         flash("Perfil atualizado com sucesso!", "success")
         return redirect(url_for('perfil'))  # Redireciona para a rota do perfil
 
     cur.close()
     return render_template('usuarios/update.html', usuario=usuario)
-
-
-#Pesquisar usuarios
-@app.route('/usuarios/read', methods=['GET', 'POST'] )
-def read():
-    return render_template('usuarios/read.html')
 
 #Deletar usuario
 @app.route('/delete/<int:id>', methods=['GET', 'POST'])

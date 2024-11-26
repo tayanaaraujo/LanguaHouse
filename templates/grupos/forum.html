@@ -22,9 +22,9 @@
             <!-- Links das Abas -->
             <div class="space-x-6 flex items-center">
                 <a href="{{ url_for('todos_grupos', id=user_id) }}" class="text-lg text-gray-600 hover:text-purple-600">Início</a>
-                <a href="{{ url_for('todos_grupos', id=user_id) }}" class="text-lg text-gray-600 hover:text-purple-600">Alunos e Professores</a>
+                <a href="{{ url_for('read') }}" class="text-lg text-gray-600 hover:text-purple-600">Alunos e Professores</a>
                 <a href="{{ url_for('todos_grupos', id=user_id) }}" class="text-lg text-gray-600 hover:text-purple-600">Grupos</a>
-                <a href="{{ url_for('todos_grupos', id=user_id) }}" class="text-lg text-gray-600 hover:text-purple-600">Progresso</a>
+               <!-- <a href="{{ url_for('todos_grupos', id=user_id) }}" class="text-lg text-gray-600 hover:text-purple-600"> Progresso </a> -->
                 
                 <!-- Ícone de Notificação e Mensagem -->
                 <div class="relative">
@@ -90,9 +90,6 @@
                 {% endif %}
             {% endif %}
         </section>
-
-
-
 
         <!-- Aba Alunos e Professores -->
         <section id="alunos-professores" class="hidden"></section>
