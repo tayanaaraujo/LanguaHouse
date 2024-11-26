@@ -480,6 +480,65 @@ def cad_grupos(id):
 
     return render_template('grupos/cadastro_grupo.html', usuario=usuario)
 
+@app.route('/grupos/atualizar_grupo/<int:id>', methods=['GET', 'POST'])
+def atual_grupos(id):
+    cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
 
+    cur.execute("""
+        SELECT g.* 
+        FROM grupo g
+        LEFT JOIN usuario u ON g.cod_usuario = u.cod_usuario
+        WHERE g.cod_usuario = %s
+    """, (id,))
+    grupo = cur.fetchall()  # Pega todos os idiomas do usuário
+
+    if not grupo:
+        flash('Nenhum grupo encontrado para este usuário.', 'danger')
+        return redirect(url_for('forum'))
+
+    cur.execute("SELECT * FROM usuario WHERE cod_usuario = %s", (id,))
+    usuario = cur.fetchone()
+
+    if not usuario:
+        flash('Usuário não encontrado.', 'danger')
+        return redirect(url_for('forum', id=id))
+
+    if request.method == 'POST':
+        cod_usuario = id
+        nome_grupo = request.form['nome_grupo']
+        linguagem = request.form['linguagem']
+        descricao = request.form['descricao']
+ 
+        try:
+            # Verificar se o grupo já está cadastrados para o usuário
+            cur.execute("""
+                SELECT * 
+                FROM grupo 
+                WHERE cod_usuario = %s AND nome_grupo = %s
+            """, (id, nome_grupo))   
+            grupo_existente = cur.fetchone()
+
+            if not grupo_existente:
+                flash('Grupo não encontrado para este usuário.', 'danger')
+                return redirect(url_for('atual_grupos', id=id))
+
+            # Atualizar grupo
+            cur.execute("""
+                UPDATE grupo 
+                SET nome_grupo = %s, linguagem = %s, descricao = %s
+                WHERE cod_usuario = %s AND nome_grupo = %s
+            """, ( nome_grupo, linguagem, descricao, cod_usuario, grupo_existente['nome_grupo']))
+            mysql.connection.commit()
+
+            flash('Grupo atualizado com sucesso!', 'success')
+        except Exception as e:
+            mysql.connection.rollback()
+            flash(f'Erro ao atualizar grupo: {str(e)}', 'danger')
+        finally:
+            cur.close()
+            return redirect(url_for('atual_grupos', id=id))
+
+
+    return render_template('grupos/atualizar_grupo.html', usuario=usuario)
 if __name__ == '__main__':
     app.run(debug=True)

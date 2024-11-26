@@ -23,8 +23,7 @@
             <div class="space-x-6 flex items-center">
                 <a href="#inicio" class="text-lg text-gray-600 hover:text-purple-600">Início</a>
                 <a href="#alunos-professores" class="text-lg text-gray-600 hover:text-purple-600">Alunos e Professores</a>
-                <a href="{{ url_for('todos_grupos', id=usuario['cod_usuario']) }}" class="text-lg text-gray-600 hover:text-purple-600">Grupos</a>
-                <a href="#progresso" class="text-lg text-gray-600 hover:text-purple-600">Progresso</a>
+                <a href="{{ url_for('todos_grupos', id=usuario['cod_usuario']) }}" class="text-lg text-gray-600 hover:text-purple-600">Grupos</a> 
                 
                 <!-- Ícone de Notificação e Mensagem -->
                 <div class="relative">
@@ -54,6 +53,8 @@
           <div class="space-y-2"> <!-- Reduzido o espaçamento aqui -->
             <!-- Adicionando efeitos de transição e hover nas opções do menu -->
             <a href="{{ url_for('cad_grupos', id = usuario['cod_usuario']) }}" class="block text-lg text-gray-700 hover:text-purple-700 transition-all duration-300 transform hover:scale-105 hover:bg-gray-100 p-2 rounded-md">Criar Grupo</a>
+            <a href="{{ url_for('atual_grupos', id = usuario['cod_usuario']) }}" class="block text-lg text-gray-700 hover:text-purple-700 transition-all duration-300 transform hover:scale-105 hover:bg-gray-100 p-2 rounded-md">Atualizar Grupo</a>
+            <a href="{{ url_for('cad_grupos', id = usuario['cod_usuario']) }}" class="block text-lg text-gray-700 hover:text-purple-700 transition-all duration-300 transform hover:scale-105 hover:bg-gray-100 p-2 rounded-md">Deletar Grupo</a>
           </div>
         </nav>
         </div>
@@ -96,79 +97,7 @@
                 {% endif %}
             {% endif %}
         </section>
-
-
-
-
-        <!-- Aba Alunos e Professores -->
-        <section id="alunos-professores" class="hidden"></section>
-        
-        <!-- Aba Grupos -->
-        <section id="grupos" class="hidden space-y-6">
-            <h2 class="text-2xl font-semibold text-gray-800">Grupos</h2>
-            <!-- Grupos que o usuário participa -->
-            <div>
-                <h3 class="text-lg font-semibold text-gray-700">Seus Grupos</h3>
-                <ul class="space-y-2">
-                    <li class="p-4 bg-gray-100 rounded-md shadow-sm">
-                        <span class="font-medium text-purple-600">Grupo de Espanhol</span> - 
-                        <span class="text-gray-600">Nível Intermediário</span>
-                    </li>
-                </ul>
-            </div>
-
-            <!-- Grupos que o usuário deseja entrar -->
-            <div>
-                <h3 class="text-lg font-semibold text-gray-700">Grupos Sugeridos</h3>
-                <ul class="space-y-2">
-                    <li class="p-4 bg-gray-100 rounded-md shadow-sm flex justify-between items-center">
-                        <span>
-                            <span class="font-medium text-purple-600">Grupo de Inglês Avançado</span> - 
-                            <span class="text-gray-600">Nível Avançado</span>
-                        </span>
-                        <button class="text-sm text-white bg-purple-600 px-4 py-2 rounded-md">Entrar</button>
-                    </li>
-                </ul>
-            </div>
-        </section>
-
-        <!-- Aba Progresso -->
-        <section id="progresso" class="hidden space-y-6">
-            <h2 class="text-2xl font-semibold text-gray-800">Progresso</h2>
-
-            <!-- Métricas de desempenho -->
-            <div class="grid grid-cols-2 gap-4">
-                <div class="p-4 bg-gray-100 rounded-md shadow-sm">
-                    <h3 class="font-semibold text-gray-700">Média de Palavras por Minuto</h3>
-                    <p class="text-xl text-purple-600">--</p>
-                </div>
-                <div class="p-4 bg-gray-100 rounded-md shadow-sm">
-                    <h3 class="font-semibold text-gray-700">Porcentagem Média de Conversação</h3>
-                    <p class="text-xl text-purple-600">--</p>
-                </div>
-                <div class="p-4 bg-gray-100 rounded-md shadow-sm">
-                    <h3 class="font-semibold text-gray-700">Média de Palavras por Aula</h3>
-                    <p class="text-xl text-purple-600">--</p>
-                </div>
-                <div class="p-4 bg-gray-100 rounded-md shadow-sm">
-                    <h3 class="font-semibold text-gray-700">Total de Minutos de Estudo com Professores</h3>
-                    <p class="text-xl text-purple-600">--</p>
-                </div>
-            </div>
-
-            <!-- Conquistas -->
-            <div>
-                <h3 class="text-lg font-semibold text-gray-700">Conquistas</h3>
-                <ul class="space-y-2">
-                    <li class="p-4 bg-purple-100 text-purple-700 rounded-md">
-                        <strong>Avaliação Triunfante:</strong> Conclua a sua primeira aula.
-                    </li>
-                    <li class="p-4 bg-purple-100 text-purple-700 rounded-md">
-                        <strong>LanguaHouse Newbie:</strong> Boas-vindas! Estamos muito felizes por você estar aqui.
-                    </li>
-                </ul>
-            </div>
-        </section>
+       
     </div>
 
 </body>
