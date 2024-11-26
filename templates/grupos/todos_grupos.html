@@ -54,7 +54,7 @@
             <!-- Adicionando efeitos de transição e hover nas opções do menu -->
             <a href="{{ url_for('cad_grupos', id = usuario['cod_usuario']) }}" class="block text-lg text-gray-700 hover:text-purple-700 transition-all duration-300 transform hover:scale-105 hover:bg-gray-100 p-2 rounded-md">Criar Grupo</a>
             <a href="{{ url_for('atual_grupos', id = usuario['cod_usuario']) }}" class="block text-lg text-gray-700 hover:text-purple-700 transition-all duration-300 transform hover:scale-105 hover:bg-gray-100 p-2 rounded-md">Atualizar Grupo</a>
-            <a href="{{ url_for('cad_grupos', id = usuario['cod_usuario']) }}" class="block text-lg text-gray-700 hover:text-purple-700 transition-all duration-300 transform hover:scale-105 hover:bg-gray-100 p-2 rounded-md">Deletar Grupo</a>
+            <a href="{{ url_for('del_grupos', id = usuario['cod_usuario']) }}" class="block text-lg text-gray-700 hover:text-purple-700 transition-all duration-300 transform hover:scale-105 hover:bg-gray-100 p-2 rounded-md">Deletar Grupo</a>
           </div>
         </nav>
         </div>

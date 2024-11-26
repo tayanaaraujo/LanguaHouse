@@ -540,5 +540,33 @@ def atual_grupos(id):
 
 
     return render_template('grupos/atualizar_grupo.html', usuario=usuario)
+
+
+@app.route('/grupos/deletar_grupo/<int:id>', methods=['GET', 'POST'])
+def del_grupos(id):
+    cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+    cur.execute("SELECT * FROM usuario WHERE cod_usuario = %s", (id,))
+    usuario = cur.fetchone()
+
+    if not usuario:
+        return "Usuário não encontrado", 404
+
+    if request.method == 'POST':
+        nome_grupo = request.form['nome_grupo']
+        senha_atual = request.form['senha_atual']
+
+        if not check_password_hash(usuario['senha'], senha_atual):
+            flash("Senha atual incorreta", "error")
+            return render_template('grupos/deletar_grupo.html', usuario=usuario)
+
+        cur.execute("DELETE FROM grupo WHERE cod_usuario = %s AND nome_grupo = %s", (id, nome_grupo))
+        mysql.connection.commit()
+        cur.close()
+
+        flash("Grupo deletado com sucesso", "success")
+
+    return render_template('grupos/deletar_grupo.html', usuario=usuario)
+
+
 if __name__ == '__main__':
     app.run(debug=True)
