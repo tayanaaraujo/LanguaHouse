@@ -453,5 +453,140 @@ def todos_grupos(id):
 
     return render_template('grupos/todos_grupos.html', usuario=usuario, grupos=grupos)
 
+@app.route('/grupos/cadastro_grupo/<int:id>', methods=['GET', 'POST'])
+def cad_grupos(id):
+    cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+
+    # Busca o usuário
+    cur.execute("SELECT * FROM usuario WHERE cod_usuario = %s", (id,))
+    usuario = cur.fetchone()
+
+    if not usuario:
+        flash('Usuário não encontrado.', 'danger')
+        return redirect(url_for('index'))
+
+    if request.method == 'POST':
+        cod_usuario = id
+        nome_grupo = request.form['nome_grupo']
+        linguagem = request.form['linguagem']
+        descricao = request.form['descricao']
+
+        try:
+            # Verificar duplicidade na tabela idioma
+            cur.execute("""
+                SELECT cod_idioma FROM idioma 
+                WHERE cod_usuario = %s AND linguagem = %s
+            """, (cod_usuario, linguagem))
+            idioma_existente = cur.fetchone()
+
+            if not idioma_existente:
+                flash('Idioma não encontrado para este usuário.', 'danger')
+                return redirect(url_for('cad_grupos', id=id))
+
+            # Inserir novo grupo
+            cur.execute("""
+                INSERT INTO grupo (cod_usuario, cod_idioma, nome_grupo, linguagem, descricao)
+                VALUES (%s, %s, %s, %s, %s)
+            """, (cod_usuario, idioma_existente['cod_idioma'], nome_grupo, linguagem, descricao))
+            mysql.connection.commit()
+
+            flash('Grupo cadastrado com sucesso!', 'success')
+        except Exception as e:
+            mysql.connection.rollback()
+            flash(f'Erro ao cadastrar grupo: {str(e)}', 'danger')
+        finally:
+            cur.close()
+            return redirect(url_for('cad_grupos', id=id))
+
+    return render_template('grupos/cadastro_grupo.html', usuario=usuario)
+
+@app.route('/grupos/atualizar_grupo/<int:id>', methods=['GET', 'POST'])
+def atual_grupos(id):
+    cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+
+    cur.execute("""
+        SELECT g.* 
+        FROM grupo g
+        LEFT JOIN usuario u ON g.cod_usuario = u.cod_usuario
+        WHERE g.cod_usuario = %s
+    """, (id,))
+    grupo = cur.fetchall()  # Pega todos os idiomas do usuário
+
+    if not grupo:
+        flash('Nenhum grupo encontrado para este usuário.', 'danger')
+        return redirect(url_for('forum'))
+
+    cur.execute("SELECT * FROM usuario WHERE cod_usuario = %s", (id,))
+    usuario = cur.fetchone()
+
+    if not usuario:
+        flash('Usuário não encontrado.', 'danger')
+        return redirect(url_for('forum', id=id))
+
+    if request.method == 'POST':
+        cod_usuario = id
+        nome_grupo = request.form['nome_grupo']
+        linguagem = request.form['linguagem']
+        descricao = request.form['descricao']
+ 
+        try:
+            # Verificar se o grupo já está cadastrados para o usuário
+            cur.execute("""
+                SELECT * 
+                FROM grupo 
+                WHERE cod_usuario = %s AND nome_grupo = %s
+            """, (id, nome_grupo))   
+            grupo_existente = cur.fetchone()
+
+            if not grupo_existente:
+                flash('Grupo não encontrado para este usuário.', 'danger')
+                return redirect(url_for('atual_grupos', id=id))
+
+            # Atualizar grupo
+            cur.execute("""
+                UPDATE grupo 
+                SET nome_grupo = %s, linguagem = %s, descricao = %s
+                WHERE cod_usuario = %s AND nome_grupo = %s
+            """, ( nome_grupo, linguagem, descricao, cod_usuario, grupo_existente['nome_grupo']))
+            mysql.connection.commit()
+
+            flash('Grupo atualizado com sucesso!', 'success')
+        except Exception as e:
+            mysql.connection.rollback()
+            flash(f'Erro ao atualizar grupo: {str(e)}', 'danger')
+        finally:
+            cur.close()
+            return redirect(url_for('atual_grupos', id=id))
+
+
+    return render_template('grupos/atualizar_grupo.html', usuario=usuario)
+
+
+@app.route('/grupos/deletar_grupo/<int:id>', methods=['GET', 'POST'])
+def del_grupos(id):
+    cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+    cur.execute("SELECT * FROM usuario WHERE cod_usuario = %s", (id,))
+    usuario = cur.fetchone()
+
+    if not usuario:
+        return "Usuário não encontrado", 404
+
+    if request.method == 'POST':
+        nome_grupo = request.form['nome_grupo']
+        senha_atual = request.form['senha_atual']
+
+        if not check_password_hash(usuario['senha'], senha_atual):
+            flash("Senha atual incorreta", "error")
+            return render_template('grupos/deletar_grupo.html', usuario=usuario)
+
+        cur.execute("DELETE FROM grupo WHERE cod_usuario = %s AND nome_grupo = %s", (id, nome_grupo))
+        mysql.connection.commit()
+        cur.close()
+
+        flash("Grupo deletado com sucesso", "success")
+
+    return render_template('grupos/deletar_grupo.html', usuario=usuario)
+
+
 if __name__ == '__main__':
     app.run(debug=True)
