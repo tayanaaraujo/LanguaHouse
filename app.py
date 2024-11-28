@@ -18,6 +18,7 @@ app.config['MYSQL_DB'] = DB_CONFIG['MYSQL_DB']
 # Inicializando o MySQL
 mysql = MySQL(app)
 
+#
 app.secret_key = '9b4e5417c43ff5c1d2168b1677b1957e'
 
 @app.route('/')
@@ -274,10 +275,6 @@ def perfil_idioma(id):
     """, (id,))
     idioma = cur.fetchall()  # Pega todos os idiomas do usuário
 
-    if not idioma:
-        flash('Nenhum idioma encontrado para este usuário.', 'danger')
-        return redirect(url_for('perfil_idioma', id=id))
-    
     cur.close()
 
     return render_template('idiomas/idioma_perfil.html', usuario=usuario, idioma=idioma)
@@ -412,6 +409,11 @@ def delete_idioma(id):
             return render_template('usuarios/delete.html', usuario=usuario)
 
         cur.execute("DELETE FROM idioma WHERE cod_usuario = %s AND linguagem = %s", (id, linguagem))
+        mysql.connection.commit()
+        cur.close()
+
+        #Deleta a participação no grupo
+        cur.execute("DELETE FROM Integrante WHERE cod_usuario = %s", (id))
         mysql.connection.commit()
         cur.close()
 
@@ -684,8 +686,6 @@ def teste_ingles():
 @app.route('/idiomas/teste_espanhol')
 def teste_espanhol():
     return render_template('idiomas/teste_espanhol.html')
-
-
 
 if __name__ == '__main__':
     app.run(debug=True)
