@@ -645,6 +645,17 @@ def ver_membros(grupo_id, user_id):
     return render_template('grupos/membros.html', grupo=grupo, membros=membros, user_id=user_id)
 
 
+# Rota para o teste de inglês
+@app.route('/idiomas/teste_ingles')
+def teste_ingles():
+    return render_template('idiomas/teste_ingles.html')
+
+# Rota para o teste de espanhol
+@app.route('/idiomas/teste_espanhol')
+def teste_espanhol():
+    return render_template('idiomas/teste_espanhol.html')
+
+
 
 if __name__ == '__main__':
     app.run(debug=True)

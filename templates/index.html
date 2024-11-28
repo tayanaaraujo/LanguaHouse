@@ -74,20 +74,21 @@
 </section>
 
 
-    <!-- Seção de Idiomas -->
-    <section class="py-10">
-      <div class="container mx-auto text-center">
-        <h2 class="text-2xl font-semibold mb-6">Escolha seu idioma</h2>
-        <div class="flex flex-col md:flex-row gap-4 justify-center">
-          <div class="w-full md:w-1/2">
-            <a href="#" class="bg-purple-500 text-white text-lg py-3 px-6 rounded-md w-full block hover:bg-purple-600 transition">Inglês</a>
-          </div>
-          <div class="w-full md:w-1/2">
-            <a href="#" class="bg-purple-500 text-white text-lg py-3 px-6 rounded-md w-full block hover:bg-purple-600 transition">Espanhol</a>
-          </div>
+      <!-- Teste de idioma -->
+  <section class="py-10 bg-gray-50">
+    <div class="container mx-auto text-center">
+      <h2 class="text-2xl font-semibold mb-4">Está interessado em descobrir qual é o seu nível de inglês ou espanhol?</h2>
+      <h3 class="text-gray-700 mb-6">Clique no idioma de sua preferência e realize nosso teste para avaliar seu nível!</h3>
+      <div class="flex flex-col md:flex-row gap-4 justify-center">
+        <div class="w-full md:w-1/2">
+          <a href="{{ url_for('teste_ingles') }}" class="bg-purple-500 text-white text-lg py-3 px-6 rounded-md w-full block hover:bg-purple-600 transition">Inglês</a>
+        </div>
+        <div class="w-full md:w-1/2">
+          <a href="{{ url_for('teste_espanhol') }}" class="bg-purple-500 text-white text-lg py-3 px-6 rounded-md w-full block hover:bg-purple-600 transition">Espanhol</a>
         </div>
       </div>
-    </section>
+    </div>
+  </section>
 
 
     <!-- Seção do Método LanguaHouse -->
