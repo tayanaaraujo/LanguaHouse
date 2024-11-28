@@ -49,24 +49,28 @@
                 <input type="password" name="senha" id="senha" class="w-full px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500" required placeholder="Digite sua senha">
             </div>
 
-            <!-- Cidade -->
-            <div class="mb-4">
-                <label for="cidade" class="block text-lg font-medium text-gray-700">Cidade</label>
-                <input type="text" name="cidade" id="cidade" class="w-full px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500" required placeholder="Digite sua cidade">
-            </div>
-
             <!-- Estado -->
             <div class="mb-6">
                 <label for="estado" class="block text-lg font-medium text-gray-700">Estado</label>
-                <input type="text" name="estado" id="estado" class="w-full px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500" required placeholder="Digite seu estado">
+                <select name="estado" id="estado" class="w-full px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500" required>
+                    <option value="" disabled selected>Selecione seu estado</option>
+                    <!-- As opções de estado serão carregadas aqui via JavaScript -->
+                </select>
+            </div>
+
+           <!-- Cidade -->
+            <div class="mb-4">
+                <label for="cidade" class="block text-lg font-medium text-gray-700">Cidade</label>
+                <select name="cidade" id="cidade" class="w-full px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500" required>
+                    <option value="" disabled selected>Selecione sua cidade</option>
+                    <!-- As cidades serão carregadas aqui -->
+                </select>
             </div>
 
             <!-- Botão de Enviar -->
             <button type="submit" class="w-full py-3 bg-purple-600 text-white font-semibold rounded-md hover:bg-purple-700 transition duration-300">Criar Conta</button>
 
         </form>
-
-
 
         <!-- Link para voltar -->
         <div class="mt-6 text-center">
@@ -79,8 +83,7 @@
         {% if messages %}
         <div class="space-y-4"> <!-- Espaçamento entre as mensagens -->
             {% for category, message in messages %}
-            <div 
-                class="px-4 py-3 rounded-md text-white 
+            <div class="px-4 py-3 rounded-md text-white 
                         {{ 'bg-green-500' if category == 'success' else 'bg-red-500' }}">
                 {{ message }}
             </div>
@@ -98,14 +101,69 @@
       </div>
   </footer>
 
+  <script>
+    // Função para buscar e carregar os estados
+    async function loadStates() {
+        try {
+            const response = await fetch('/api/estados');
+            const states = await response.json();
 
-  
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+            if (states.error) {
+                throw new Error(states.error);
+            }
 
-    <!-- Option 2: Separate Popper and Bootstrap JS -->
-    <!--
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
-    -->
+            const stateSelect = document.getElementById('estado');
+            stateSelect.innerHTML = '<option value="" disabled selected>Selecione seu estado</option>';
+
+            states.forEach(state => {
+                const option = document.createElement('option');
+                option.value = state.sigla;
+                option.textContent = state.sigla;
+                stateSelect.appendChild(option);
+            });
+        } catch (error) {
+            console.error("Erro ao carregar os estados:", error);
+        }
+    }
+
+    // Função para buscar e carregar as cidades com base no estado
+    async function loadCities(estado) {
+        try {
+            const response = await fetch(`/api/cidades/${estado}`);
+            const cities = await response.json();
+
+            if (cities.error) {
+                throw new Error(cities.error);
+            }
+
+            const citySelect = document.getElementById('cidade');
+            citySelect.innerHTML = '<option value="" disabled selected>Selecione sua cidade</option>';  // Limpa as opções
+
+            cities.forEach(city => {
+                const option = document.createElement('option');
+                option.value = city.nome;  // Nome da cidade
+                option.textContent = city.nome;  // Nome da cidade também como texto da opção
+                citySelect.appendChild(option);
+            });
+        } catch (error) {
+            console.error("Erro ao carregar as cidades:", error);
+            const citySelect = document.getElementById('cidade');
+            citySelect.innerHTML = '<option value="" disabled selected>Erro ao carregar cidades</option>';
+        }
+    }
+
+    // Carregar os estados ao carregar a página
+    window.onload = loadStates;
+
+    // Quando o estado é alterado, carregue as cidades
+    document.getElementById('estado').addEventListener('change', (event) => {
+        const estado = event.target.value;
+        if (estado) {
+            loadCities(estado);
+        }
+    });
+</script>
+
+    
 </body>
 </html>

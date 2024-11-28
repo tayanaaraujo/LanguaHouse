@@ -1,9 +1,10 @@
 # app.py
 import MySQLdb
-from flask import Flask, render_template, request, redirect, url_for, session, flash
+import secrets
+import requests
+from flask import Flask, render_template, request, redirect, url_for, session, flash, jsonify
 from flask_mysqldb import MySQL
 from config import DB_CONFIG
-import secrets
 from werkzeug.security import check_password_hash, generate_password_hash
 
 app = Flask(__name__)
@@ -24,6 +25,9 @@ def index():
     return render_template('index.html')
 
 #Cadastro usuário
+from flask import redirect, url_for
+
+# Cadastro usuário
 @app.route('/usuarios/', methods=['GET', 'POST'])
 def create():
     if request.method == 'POST':
@@ -34,26 +38,52 @@ def create():
         cidade = request.form['cidade']
         estado = request.form['estado']
         
-        senha_hash = generate_password_hash(senha)  
+        senha_hash = generate_password_hash(senha)
 
         try:
-            
             cur = mysql.connection.cursor()
             cur.execute("""
                 INSERT INTO usuario (nome, email, data_nasc, senha, cidade, estado)
                 VALUES (%s, %s, %s, %s, %s, %s)
             """, (nome, email, data_nasc, senha_hash, cidade, estado))
             mysql.connection.commit()
+            
+            # Agora pega o ID do usuário recém-criado
+            user_id = cur.lastrowid  # Isso pega o ID gerado pelo banco
+
+            # Definir o user_id na sessão para "logar" o usuário
+            session['user_id'] = user_id
+            
             cur.close()
 
-            # Flash de mensagem de sucesso
-            flash('Usuário criado com sucesso!', 'success')
-            
+            return redirect(url_for('forum')) 
+
         except Exception as e:
-            flash(f'Erro ao criar usuário: {str(e)}', 'danger')
+            # Em caso de erro, redireciona de volta para o cadastro
             return redirect(url_for('create'))
 
     return render_template('usuarios/create.html')
+
+# Endpoint para buscar os estados
+@app.route('/api/estados', methods=['GET'])
+def get_estados():
+    try:
+        # Fazendo a requisição para a API de estados
+        response = requests.get('https://brasilapi.com.br/api/ibge/uf/v1/')
+        response.raise_for_status()  # Levanta um erro se a requisição falhar
+        return jsonify(response.json())  # Retorna os estados como JSON
+    except requests.exceptions.RequestException as e:
+        return jsonify({'error': str(e)}), 500  # Retorna o erro se ocorrer algum problema
+    
+@app.route('/api/cidades/<estado>', methods=['GET'])
+def get_cidades(estado):
+    try:
+        # Fazendo a requisição para a API de cidades com o estado
+        response = requests.get(f'https://brasilapi.com.br/api/ibge/municipios/v1/{estado}')
+        response.raise_for_status()  # Levanta um erro se a requisição falhar
+        return jsonify(response.json())  # Retorna as cidades como JSON
+    except requests.exceptions.RequestException as e:
+        return jsonify({'error': str(e)}), 500  # Retorna o erro se ocorrer algum problema
 
 #Login usuario
 @app.route('/usuarios/login', methods=['GET', 'POST'])
