@@ -34,7 +34,6 @@ def create():
         cidade = request.form['cidade']
         estado = request.form['estado']
         
-        
         senha_hash = generate_password_hash(senha)  
 
         try:
@@ -424,7 +423,6 @@ def forum():
     # Retorna a página do fórum com os resultados da pesquisa
     return render_template('grupos/forum.html', usuarios=usuarios, query=query, 
                            usuario_logado=usuario_logado, user_id=user_id)
-
 
 #Grupos
 @app.route('/grupos/todos_grupos/<int:id>', methods=['GET', 'POST'])
