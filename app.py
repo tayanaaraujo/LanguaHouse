@@ -486,6 +486,16 @@ def cad_grupos(id):
                 INSERT INTO grupo (cod_usuario, cod_idioma, nome_grupo, linguagem, descricao)
                 VALUES (%s, %s, %s, %s, %s)
             """, (cod_usuario, idioma_existente['cod_idioma'], nome_grupo, linguagem, descricao))
+
+            # Recuperar o ID do grupo recém-criado
+            cod_grupo = cur.lastrowid
+
+            # Inserir criador na tabela integrante
+            cur.execute("""
+                INSERT INTO integrante (cod_usuario, cod_grupo, data_entrada, status, papel)
+                VALUES (%s, %s, CURDATE(), 'ativo', 'criador')
+            """, (cod_usuario, cod_grupo))
+
             mysql.connection.commit()
 
             flash('Grupo cadastrado com sucesso!', 'success')
@@ -584,6 +594,56 @@ def del_grupos(id):
         flash("Grupo deletado com sucesso", "success")
 
     return render_template('grupos/deletar_grupo.html', usuario=usuario)
+
+@app.route('/grupos/entrar/<int:grupo_id>', methods=['POST'])
+def entrar_grupo(grupo_id):
+    cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+    user_id = session['user_id']  # Assumindo que o usuário está logado e o ID está na sessão
+
+    # Verificar se o usuário já é integrante
+    cur.execute("""
+        SELECT * FROM integrante WHERE cod_usuario = %s AND cod_grupo = %s
+    """, (user_id, grupo_id))
+    integrante = cur.fetchone()
+
+    if integrante:
+        flash('Você já é integrante deste grupo.', 'info')
+    else:
+        # Inserir usuário como integrante
+        cur.execute("""
+            INSERT INTO integrante (cod_usuario, cod_grupo, data_entrada, status, papel)
+            VALUES (%s, %s, CURDATE(), 'ativo', 'membro')
+        """, (user_id, grupo_id))
+        mysql.connection.commit()
+        flash('Você entrou no grupo com sucesso!', 'success')
+
+    cur.close()
+    return redirect(url_for('todos_grupos', id=user_id))
+
+@app.route('/grupos/membros/<int:grupo_id>/<int:user_id>')
+def ver_membros(grupo_id, user_id):
+    cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+
+    # Obter o nome do grupo
+    cur.execute("SELECT nome_grupo FROM grupo WHERE cod_grupo = %s", (grupo_id,))
+    grupo = cur.fetchone()
+
+    if not grupo:
+        flash('Grupo não encontrado.', 'danger')
+        return redirect(url_for('todos_grupos', id=user_id))
+
+    # Obter os membros do grupo
+    cur.execute("""
+        SELECT u.nome, i.papel, i.status 
+        FROM integrante i 
+        JOIN usuario u ON i.cod_usuario = u.cod_usuario 
+        WHERE i.cod_grupo = %s
+    """, (grupo_id,))
+    membros = cur.fetchall()
+    cur.close()
+
+    return render_template('grupos/membros.html', grupo=grupo, membros=membros, user_id=user_id)
+
 
 
 if __name__ == '__main__':

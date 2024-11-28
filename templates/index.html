@@ -12,7 +12,9 @@
     <script src="https://cdn.tailwindcss.com"></script>
 
     <title>LanguaHouse</title>
+    
   </head>
+
   <body class="bg-gray-100 text-gray-800">
 
     <!-- Cabeçalho -->
@@ -43,33 +45,34 @@
     </section>
 
     <!-- Aprendizado Colaborativo -->
-    <section class="py-16 bg-gray-50 text-center">
-      <div class="container mx-auto">
-        <h2 class="text-3xl font-semibold mb-10">O que você vai encontrar no LanguaHouse</h2>
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-          <!-- Aprendizado Colaborativo -->
-          <div class="p-6 bg-white rounded-lg shadow-md hover:shadow-lg transition">
-            <i class="fas fa-users fa-3x mb-4 text-purple-600"></i>
-            <h3 class="text-xl font-semibold">Aprendizado Colaborativo e Interativo</h3>
-            <p>No LanguaHouse, você aprende e ensina de forma colaborativa, conectando-se com outros estudantes e falantes nativos.</p>
-          </div>
-
-          <!-- Acessibilidade e Flexibilidade -->
-          <div class="p-6 bg-white rounded-lg shadow-md hover:shadow-lg transition">
-            <i class="fas fa-clock fa-3x mb-4 text-purple-600"></i>
-            <h3 class="text-xl font-semibold">Acessibilidade e Flexibilidade</h3>
-            <p>Pratique idiomas quando e onde quiser, sem custos. O LanguaHouse oferece flexibilidade total para você aprender no seu ritmo.</p>
-          </div>
-
-          <!-- Conexões Globais e Diversidade Cultural -->
-          <div class="p-6 bg-white rounded-lg shadow-md hover:shadow-lg transition">
-            <i class="fas fa-globe-americas fa-3x mb-4 text-purple-600"></i>
-            <h3 class="text-xl font-semibold">Conexões e Diversidade Cultural</h3>
-            <p>Conecte-se com estudantes de todo o mundo e compartilhe experiências culturais enquanto aprimora suas habilidades linguísticas.</p>
-          </div>
-        </div>
+<section class="py-16 bg-gray-50 text-center fade-in">
+  <div class="container mx-auto">
+    <h2 class="text-3xl font-semibold mb-10">O que você vai encontrar no LanguaHouse</h2>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+      <!-- Aprendizado Colaborativo -->
+      <div class="p-6 bg-white rounded-lg shadow-md hover:shadow-lg transition">
+        <i class="fas fa-users fa-3x mb-4 text-purple-600"></i>
+        <h3 class="text-xl font-semibold">Aprendizado Colaborativo e Interativo</h3>
+        <p>No LanguaHouse, você aprende e ensina de forma colaborativa, conectando-se com outros estudantes e falantes nativos.</p>
       </div>
-    </section>
+
+      <!-- Acessibilidade e Flexibilidade -->
+      <div class="p-6 bg-white rounded-lg shadow-md hover:shadow-lg transition">
+        <i class="fas fa-clock fa-3x mb-4 text-purple-600"></i>
+        <h3 class="text-xl font-semibold">Acessibilidade e Flexibilidade</h3>
+        <p>Pratique idiomas quando e onde quiser, sem custos. O LanguaHouse oferece flexibilidade total para você aprender no seu ritmo.</p>
+      </div>
+
+      <!-- Conexões Globais e Diversidade Cultural -->
+      <div class="p-6 bg-white rounded-lg shadow-md hover:shadow-lg transition">
+        <i class="fas fa-globe-americas fa-3x mb-4 text-purple-600"></i>
+        <h3 class="text-xl font-semibold">Conexões e Diversidade Cultural</h3>
+        <p>Conecte-se com estudantes de todo o mundo e compartilhe experiências culturais enquanto aprimora suas habilidades linguísticas.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
 
     <!-- Seção de Idiomas -->
     <section class="py-10">
@@ -100,21 +103,72 @@
       </div>
     </section>
 
-    <!-- Pratique Inglês ou Espanhol em Grupos -->
-    <section class="py-16 bg-gray-100">
-  <div class="container mx-auto flex flex-col md:flex-row items-center">
-    <div class="md:w-1/2 mb-8 md:mb-0">
-      <img src="/static/img/praticando em grupos1.png" class="mx-auto w-4/4 md:w-4/4">
+    <!-- Seção do Carrossel -->
+    <section class="py-5 bg-gray-50">
+      <div class="container mx-auto text-center">
+        <h2 class="text-3xl font-semibold mb-10">O que nossos usuários dizem</h2>
+
+        <!-- Carrossel -->
+        <div class="relative">
+          <!-- Slides -->
+          <div id="carousel" class="overflow-hidden">
+            <div class="flex transition-transform duration-500 ease-in-out" id="carouselSlides">
+              <!-- Slide 1 -->
+              <div class="w-full flex-shrink-0 px-4">
+                <div class="p-8 bg-white shadow-lg rounded-lg">
+                  <p class="text-lg text-gray-700 mb-4">"O LanguaHouse mudou minha forma de aprender idiomas! Conectar com nativos foi a chave para meu sucesso."</p>
+                  <h3 class="font-semibold text-gray-800">João Silva</h3>
+                  <p class="text-gray-500">Estudante de Inglês</p>
+                </div>
+              </div>
+
+              <!-- Slide 2 -->
+              <div class="w-full flex-shrink-0 px-4">
+                <div class="p-8 bg-white shadow-lg rounded-lg">
+                  <p class="text-lg text-gray-700 mb-4">"A flexibilidade do LanguaHouse me ajudou a aprender no meu próprio ritmo. É uma plataforma incrível e acessível para todos e de graça ainda!"</p>
+                  <h3 class="font-semibold text-gray-800">Maria Oliveira</h3>
+                  <p class="text-gray-500">Estudante de Espanhol</p>
+                </div>
+              </div>
+
+              <!-- Slide 3 -->
+              <div class="w-full flex-shrink-0 px-4">
+                <div class="p-8 bg-white shadow-lg rounded-lg">
+                  <p class="text-lg text-gray-700 mb-4">"Eu adoro praticar idiomas com outros estudantes e falantes nativos. O LanguaHouse é uma ótima comunidade!"</p>
+                  <h3 class="font-semibold text-gray-800">Carlos Almeida</h3>
+                  <p class="text-gray-500">Estudante de Inglês</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Controles -->
+          <button id="prev" class="absolute left-0 top-1/2 transform -translate-y-1/2 bg-purple-700 text-white py-2 px-4 rounded-full hover:bg-purple-600 transition">
+            <i class="fas fa-chevron-left"></i>
+          </button>
+          <button id="next" class="absolute right-0 top-1/2 transform -translate-y-1/2 bg-purple-700 text-white py-2 px-4 rounded-full hover:bg-purple-600 transition">
+            <i class="fas fa-chevron-right"></i>
+          </button>
+        </div>
+      </div>
+    </section>
+
+
+      <!-- Pratique Inglês ou Espanhol em Grupos -->
+      <section class="py-13 bg-gray-50">
+    <div class="container mx-auto flex flex-col md:flex-row items-center">
+      <div class="md:w-1/2 mb-8 md:mb-0">
+        <img src="/static/img/praticando em grupos1.png" class="mx-auto w-4/4 md:w-4/4">
+      </div>
+      <div class="md:w-1/2 md:pl-12">
+        <h2 class="text-3xl font-semibold mb-4">Pratique inglês ou espanhol em grupos</h2>
+        <h3 class="text-lg text-gray-700 mb-8">Você pode aprender e praticar inglês e espanhol em grupos de estudo. Conecte-se com falantes nativos e outros estudantes, troque conhecimentos e pratique no seu ritmo, sem custos. Participe de conversas ao vivo, aprenda com diferentes níveis e culturas, e melhore suas habilidades linguísticas de maneira divertida e flexível!</h3>
+      </div>
     </div>
-    <div class="md:w-1/2 md:pl-12">
-      <h2 class="text-3xl font-semibold mb-4">Pratique inglês ou espanhol em grupos</h2>
-      <h3 class="text-lg text-gray-700 mb-8">Você pode aprender e praticar inglês e espanhol em grupos de estudo. Conecte-se com falantes nativos e outros estudantes, troque conhecimentos e pratique no seu ritmo, sem custos. Participe de conversas ao vivo, aprenda com diferentes níveis e culturas, e melhore suas habilidades linguísticas de maneira divertida e flexível!</h3>
-    </div>
-  </div>
-</section>
+  </section>
 
     <!-- Seção Final -->
-    <section class="py-16 text-center bg-white">
+    <section class="py-16 text-center bg-gray-50">
       <div class="container mx-auto">
         <a class="bg-yellow-500 text-dark py-3 px-6 rounded-md hover:bg-yellow-400 transition" href="{{ url_for('create') }}">Comece Agora</a>
       </div>
@@ -152,7 +206,51 @@
     </footer>
 
 
-    <!-- Scripts -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+
+  <script>
+    // Seleciona os elementos do carrossel e os botões
+    const prevButton = document.getElementById("prev");
+    const nextButton = document.getElementById("next");
+    const carouselSlides = document.getElementById("carouselSlides");
+    let currentIndex = 0;
+    const totalSlides = carouselSlides.children.length;
+
+    // Função para mover para o slide anterior
+    function moveToPrevSlide() {
+      if (currentIndex === 0) {
+        currentIndex = totalSlides - 1; // Voltar para o último slide
+      } else {
+        currentIndex--;
+      }
+      updateCarouselPosition();
+    }
+
+    // Função para mover para o próximo slide
+    function moveToNextSlide() {
+      if (currentIndex === totalSlides - 1) {
+        currentIndex = 0; // Voltar para o primeiro slide
+      } else {
+        currentIndex++;
+      }
+      updateCarouselPosition();
+    }
+
+    // Função para atualizar a posição do carrossel
+    function updateCarouselPosition() {
+      const slideWidth = carouselSlides.children[0].offsetWidth;
+      carouselSlides.style.transform = `translateX(-${slideWidth * currentIndex}px)`;
+    }
+
+    // Adiciona os event listeners aos botões
+    prevButton.addEventListener("click", moveToPrevSlide);
+    nextButton.addEventListener("click", moveToNextSlide);
+
+    // Ajuste inicial para garantir que a posição do carrossel esteja certa
+    window.addEventListener("resize", updateCarouselPosition);
+
+    // Inicializa a posição do carrossel
+    updateCarouselPosition();
+  </script>
+
   </body>
 </html>

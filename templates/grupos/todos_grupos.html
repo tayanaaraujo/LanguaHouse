@@ -86,17 +86,36 @@
                         <li class="py-2">
                             <strong>{{ grupo.nome_grupo }}</strong> - {{ grupo.linguagem }}
                             
+                            <!-- Ações -->
+                            <div class="mt-2 flex space-x-4">
+                                <!-- Botão para entrar no grupo -->
+                                <!-- colocar a action do entrar no grupo -->
+                                <form   action="{{ url_for('entrar_grupo', grupo_id=grupo.cod_grupo) }}"  method="POST">
+                                    <button class="px-4 py-2 text-white bg-green-500 hover:bg-green-600 rounded">
+                                        Entrar no Grupo
+                                    </button>
+                                </form>
+                                
+                                <!-- Link para ver membros -->
+                                <a href="{{ url_for('ver_membros', grupo_id=grupo.cod_grupo, user_id=usuario['cod_usuario']) }}" 
+                                class="px-4 py-2 text-white bg-blue-500 hover:bg-blue-600 rounded">
+                                    Ver Membros
+                                </a>
+
+                                
+                            </div>
                         </li>
                     {% endfor %}
                 </ul>
             {% else %}
                 {% if query %}
-                    <p class="text-gray-600">Nenhum grupo encontrado encontrado para "{{ query }}".</p>
+                    <p class="text-gray-600">Nenhum grupo encontrado para "{{ query }}".</p>
                 {% else %}
                     <p class="text-gray-600">Pesquise pelo nome ou o idioma.</p>
                 {% endif %}
             {% endif %}
         </section>
+        
        
     </div>
 
