@@ -25,9 +25,6 @@ app.secret_key = '9b4e5417c43ff5c1d2168b1677b1957e'
 def index():
     return render_template('index.html')
 
-#Cadastro usuário
-from flask import redirect, url_for
-
 # Cadastro usuário
 @app.route('/usuarios/', methods=['GET', 'POST'])
 def create():
@@ -109,8 +106,7 @@ def login():
             # Redireciona para a página de perfil após login
             return redirect(url_for('forum'))
         else:
-            # Se a autenticação falhar
-            flash('E-mail ou senha inválidos. Tente novamente.', 'error')
+            flash('Usuário não encontrado.', 'danger')
             return redirect(url_for('login'))
 
     return render_template('usuarios/login.html')
@@ -138,36 +134,36 @@ def logout():
     return redirect(url_for('index'))
 
 #Pesquisar usuarios
-@app.route('/usuarios/read', methods=['GET', 'POST'])
-def read():
-    # Verifica se o usuário está logado
-    if 'user_id' not in session:
-        return redirect(url_for('login'))  
+# @app.route('/usuarios/read', methods=['GET', 'POST'])
+# def read():
+#     # Verifica se o usuário está logado
+#     if 'user_id' not in session:
+#         return redirect(url_for('login'))  
 
-    user_id = session['user_id']
-    cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+#     user_id = session['user_id']
+#     cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
     
-    # Obtém os dados do usuário logado
-    cur.execute("SELECT * FROM usuario WHERE cod_usuario = %s", (user_id,))
-    user = cur.fetchone()
+#     # Obtém os dados do usuário logado
+#     cur.execute("SELECT * FROM usuario WHERE cod_usuario = %s", (user_id,))
+#     user = cur.fetchone()
 
-    # Lida com a pesquisa
-    search_query = request.args.get('search', '')  # Obtém o termo de pesquisa do campo de busca
-    if search_query:
-        # Filtra os usuários por categoria
-        cur.execute("""
-            SELECT * FROM usuario
-            WHERE nome LIKE %s OR email LIKE %s JOIN idioma WHERE categoria LIKE %s
-        """, (f"%{search_query}%", f"%{search_query}%"))
-    else:
-        # Retorna todos os usuários se não houver pesquisa
-        cur.execute("SELECT * FROM usuario")
+#     # Lida com a pesquisa
+#     search_query = request.args.get('search', '')  # Obtém o termo de pesquisa do campo de busca
+#     if search_query:
+#         # Filtra os usuários por categoria
+#         cur.execute("""
+#             SELECT * FROM usuario
+#             WHERE nome LIKE %s OR email LIKE %s JOIN idioma WHERE categoria LIKE %s
+#         """, (f"%{search_query}%", f"%{search_query}%"))
+#     else:
+#         # Retorna todos os usuários se não houver pesquisa
+#         cur.execute("SELECT * FROM usuario")
     
-    users = cur.fetchall()  # Recupera os resultados da consulta
-    cur.close()
+#     users = cur.fetchall()  # Recupera os resultados da consulta
+#     cur.close()
 
-    # Renderiza a página com os usuários e o termo de pesquisa
-    return render_template('usuarios/read.html', user=user, users=users, search_query=search_query)
+#     # Renderiza a página com os usuários e o termo de pesquisa
+#     return render_template('usuarios/read.html', user=user, users=users, search_query=search_query)
 
 #Atualizar dados do usuario
 @app.route('/update/<int:id>', methods=['GET', 'POST'])
@@ -676,7 +672,6 @@ def ver_membros(grupo_id, user_id):
 
     return render_template('grupos/membros.html', grupo=grupo, membros=membros, user_id=user_id)
 
-
 # Rota para o teste de inglês
 @app.route('/idiomas/teste_ingles')
 def teste_ingles():
@@ -686,6 +681,27 @@ def teste_ingles():
 @app.route('/idiomas/teste_espanhol')
 def teste_espanhol():
     return render_template('idiomas/teste_espanhol.html')
+
+#Dados FAQ 
+faq_data = [
+    {"pergunta": "O que é LanguaHouse?", "resposta": "LanguaHouse é uma plataforma para aprender idiomas."},
+    {"pergunta": "Como funciona o teste de idiomas?", "resposta": "O teste avalia suas habilidades e sugere um nível."},
+    {"pergunta": "A plataforma é gratuita?", "resposta": "Sim, a plataforma oferece recursos gratuitos."}
+]
+
+@app.route('/faq')
+def faq():
+    faq_items = [
+        {"pergunta": "O que é LanguaHouse?", "resposta": "LanguaHouse é uma plataforma para aprender idiomas."},
+        {"pergunta": "Como funciona o teste de idiomas?", "resposta": "O teste avalia suas habilidades e sugere um nível."},
+        {"pergunta": "A plataforma é gratuita?", "resposta": "Sim, a plataforma oferece recursos gratuitos."}
+    ]
+    return render_template('faq.html', faq_items=faq_items)
+
+@app.route('/test')
+def test():
+    return render_template('faq.html')
+
 
 if __name__ == '__main__':
     app.run(debug=True)

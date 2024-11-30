@@ -17,21 +17,21 @@
     <!-- Navbar com abas e ícone de notificação/mensagem/perfil -->
     <nav class="bg-white shadow-md py-4">
         <div class="max-w-7xl mx-auto px-6 flex justify-between items-center">
-            <a href="{{ url_for('forum') }}" class="text-2xl font-semibold text-purple-600">LanguaHouse</a>
+            <a href="{{ url_for('index') }}" class="text-2xl font-semibold text-purple-600">LanguaHouse</a>
             
             <!-- Links das Abas -->
             <div class="space-x-6 flex items-center">
-                <a href="{{ url_for('todos_grupos', id=user_id) }}" class="text-lg text-gray-600 hover:text-purple-600">Início</a>
-                <a href="{{ url_for('read') }}" class="text-lg text-gray-600 hover:text-purple-600">Alunos e Professores</a>
+                <a href="{{ url_for('perfil_idioma', id=user_id) }}" class="block text-lg text-gray-700 hover:text-purple-600">Idiomas</a>
+                <a href="{{ url_for('faq') }}" class="text-lg text-gray-600 hover:text-purple-600">FAQ</a>
                 <a href="{{ url_for('todos_grupos', id=user_id) }}" class="text-lg text-gray-600 hover:text-purple-600">Grupos</a>
                <!-- <a href="{{ url_for('todos_grupos', id=user_id) }}" class="text-lg text-gray-600 hover:text-purple-600"> Progresso </a> -->
                 
                 <!-- Ícone de Notificação e Mensagem -->
-                <div class="relative">
+                <!-- <div class="relative">
                     <button class="text-purple-600 text-2xl focus:outline-none">
-                        <i class="fas fa-envelope"></i> <!-- Ícone de Mensagem -->
+                        <i class="fas fa-envelope"></i>  Ícone de Mensagem 
                     </button>                
-                </div>
+                </div> -->
                 
                 <!-- Ícone de Perfil -->
                 <div class="relative ml-4">
@@ -80,7 +80,7 @@
                     {% for usuario in usuarios %}
                         <li class="py-2">
                             <strong>{{ usuario.nome }}</strong> - {{ usuario.email }}
-                            <a href="{{ url_for('perfil', id=usuario.cod_usuario) }}" class="text-blue-500">Ver perfil</a>
+                           <!-- <a href="{{ url_for('perfil', id=usuario.cod_usuario) }}" class="text-blue-500">Ver perfil</a> -->
                         </li>
                     {% endfor %}
                 </ul>
@@ -163,13 +163,6 @@
             </div>
         </section>
     </div>
-
-
-
-
-
-
-
 
 </body>
 </html>
