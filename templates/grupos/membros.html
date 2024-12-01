@@ -15,27 +15,27 @@
 <body class="bg-gray-100">
 
     <!-- Navbar com abas e ícone de notificação/mensagem/perfil -->
-    <nav class="bg-white shadow-md py-4">
+    <nav class="bg-purple-700 p-4 shadow-lg">
         <div class="max-w-7xl mx-auto px-6 flex justify-between items-center">
-            <a href="{{ url_for('forum') }}" class="text-2xl font-semibold text-purple-600">LanguaHouse</a>
+            <a href="{{ url_for('forum') }}" class="text-white text-lg font-semibold text-purple-600">LanguaHouse</a>
             
             <!-- Links das Abas -->
             <div class="space-x-6 flex items-center">
-                <a href="#inicio" class="text-lg text-gray-600 hover:text-purple-600">Início</a>
-                <a href="#alunos-professores" class="text-lg text-gray-600 hover:text-purple-600">Alunos e Professores</a>
-                <a href="{{ url_for('todos_grupos', id=user_id) }}" class="text-lg text-gray-600 hover:text-purple-600">Grupos</a> 
+                <a href="{{ url_for ('forum')}}" class=" text-white text-white-600 hover:text-purple-600">Fórum</a>
+                <a href="{{ url_for ('faq')}}" class=" text-white text-white-600 hover:text-purple-600">FAQ</a>
+                <a href="{{ url_for('todos_grupos', id=user_id) }}" class=" text-white text-white-600 hover:text-purple-600">Grupos</a> 
                 
-                <!-- Ícone de Notificação e Mensagem -->
+                <!-- Ícone de Notificação e Mensagem 
                 <div class="relative">
                     <button class="text-purple-600 text-2xl focus:outline-none">
-                        <i class="fas fa-envelope"></i> <!-- Ícone de Mensagem -->
+                        <i class="fas fa-envelope"></i>  Ícone de Mensagem 
                     </button>                
-                </div>
+                </div> -->
                 
                 <!-- Ícone de Perfil -->
                 <div class="relative ml-4">
                     <!-- Link para a página de perfil -->
-                    <a href="{{ url_for('perfil') }}" class="text-purple-600 text-2xl focus:outline-none">
+                    <a href="{{ url_for('perfil') }}" class="text-white text-black-600 text-2xl focus:outline-none">
                         <i class="fas fa-user"></i>
                     </a>
                 </div>
@@ -50,8 +50,7 @@
         <div class="w-64 bg-white p-6 shadow-lg h-screen">
           <h3 class="text-xl font-semibold text-purple-700 mb-4">Menu</h3>
           <nav>
-          <div class="space-y-2"> <!-- Reduzido o espaçamento aqui -->
-            <!-- Adicionando efeitos de transição e hover nas opções do menu -->
+          <div class="space-y-2"> 
             <a href="{{ url_for('cad_grupos', id=user_id) }}" class="block text-lg text-gray-700 hover:text-purple-700 transition-all duration-300 transform hover:scale-105 hover:bg-gray-100 p-2 rounded-md">Criar Grupo</a>
             <a href="{{ url_for('atual_grupos', id=user_id) }}" class="block text-lg text-gray-700 hover:text-purple-700 transition-all duration-300 transform hover:scale-105 hover:bg-gray-100 p-2 rounded-md">Atualizar Grupo</a>
             <a href="{{ url_for('del_grupos', id=user_id) }}" class="block text-lg text-gray-700 hover:text-purple-700 transition-all duration-300 transform hover:scale-105 hover:bg-gray-100 p-2 rounded-md">Deletar Grupo</a>
@@ -60,8 +59,9 @@
         </div>
 
         <section id="membros" class="mt-6">
-            <h3 class="text-xl font-semibold">Membros do Grupo: {{ grupo.nome_grupo }}</h3>
-            <ul class="mt-4">
+            <div class="flex-1 p-8">
+            <h3 class="text-2xl font-semibold text-purple-700 mb-6">Membros do Grupo: {{ grupo.nome_grupo }}</h3>
+            <ul class="space-y-4">
                 {% for membro in membros %}
                     <li class="py-2">
                         <strong>{{ membro.nome }}</strong> - {{ membro.papel }} ({{ membro.status }})
@@ -74,12 +74,6 @@
             </a>
 
         </section>
-        
-       
-
-        
-        
-        
        
     </div>
 
