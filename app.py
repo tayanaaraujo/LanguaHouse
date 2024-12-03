@@ -87,7 +87,6 @@ def get_cidades(estado):
 @app.route('/usuarios/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
-        # Obter os dados do formulário
         email = request.form['email']
         password = request.form['password']
 
@@ -98,15 +97,14 @@ def login():
         cur.close()
 
         # Verificar se o usuário existe e se a senha é correta
-        if user and check_password_hash(user['senha'], password):  # Verifica o hash da senha
+        if user and check_password_hash(user['senha'], password): 
             # Salvar as informações do usuário na sessão
-            session['user_id'] = user['cod_usuario']  # ID do usuário (ajustado para o nome correto da coluna)
-            session['user_email'] = user['email']  # Email do usuário (ajustado para o nome correto da coluna)
-
+            session['user_id'] = user['cod_usuario']  
+            session['user_email'] = user['email']  
             # Redireciona para a página de perfil após login
             return redirect(url_for('forum'))
         else:
-            flash('Usuário não encontrado.', 'danger')
+            flash('Usuário ou senha inválidos.', 'danger')
             return redirect(url_for('login'))
 
     return render_template('usuarios/login.html')
@@ -133,37 +131,6 @@ def logout():
     session.pop('user_email', None)
     return redirect(url_for('index'))
 
-#Pesquisar usuarios
-# @app.route('/usuarios/read', methods=['GET', 'POST'])
-# def read():
-#     # Verifica se o usuário está logado
-#     if 'user_id' not in session:
-#         return redirect(url_for('login'))  
-
-#     user_id = session['user_id']
-#     cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-    
-#     # Obtém os dados do usuário logado
-#     cur.execute("SELECT * FROM usuario WHERE cod_usuario = %s", (user_id,))
-#     user = cur.fetchone()
-
-#     # Lida com a pesquisa
-#     search_query = request.args.get('search', '')  # Obtém o termo de pesquisa do campo de busca
-#     if search_query:
-#         # Filtra os usuários por categoria
-#         cur.execute("""
-#             SELECT * FROM usuario
-#             WHERE nome LIKE %s OR email LIKE %s JOIN idioma WHERE categoria LIKE %s
-#         """, (f"%{search_query}%", f"%{search_query}%"))
-#     else:
-#         # Retorna todos os usuários se não houver pesquisa
-#         cur.execute("SELECT * FROM usuario")
-    
-#     users = cur.fetchall()  # Recupera os resultados da consulta
-#     cur.close()
-
-#     # Renderiza a página com os usuários e o termo de pesquisa
-#     return render_template('usuarios/read.html', user=user, users=users, search_query=search_query)
 
 #Atualizar dados do usuario
 @app.route('/update/<int:id>', methods=['GET', 'POST'])
@@ -406,12 +373,6 @@ def delete_idioma(id):
 
         cur.execute("DELETE FROM idioma WHERE cod_usuario = %s AND linguagem = %s", (id, linguagem))
         mysql.connection.commit()
-        cur.close()
-
-        #Deleta a participação no grupo
-        cur.execute("DELETE FROM Integrante WHERE cod_usuario = %s", (id))
-        mysql.connection.commit()
-        cur.close()
 
         flash("Idioma deletado com sucesso", "success")
 
@@ -682,13 +643,6 @@ def teste_ingles():
 def teste_espanhol():
     return render_template('idiomas/teste_espanhol.html')
 
-#Dados FAQ 
-faq_data = [
-    {"pergunta": "O que é LanguaHouse?", "resposta": "LanguaHouse é uma plataforma para aprender idiomas."},
-    {"pergunta": "Como funciona o teste de idiomas?", "resposta": "O teste avalia suas habilidades e sugere um nível."},
-    {"pergunta": "A plataforma é gratuita?", "resposta": "Sim, a plataforma oferece recursos gratuitos."}
-]
-
 @app.route('/faq')
 def faq():
     faq_items = [
@@ -697,11 +651,6 @@ def faq():
         {"pergunta": "A plataforma é gratuita?", "resposta": "Sim, a plataforma oferece recursos gratuitos."}
     ]
     return render_template('faq.html', faq_items=faq_items)
-
-@app.route('/test')
-def test():
-    return render_template('faq.html')
-
 
 if __name__ == '__main__':
     app.run(debug=True)

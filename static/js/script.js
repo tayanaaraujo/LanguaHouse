@@ -1,31 +1,24 @@
-// Função para validar o formulário de login
-function validateLogin(event) {
-    // Impede o envio do formulário se não for válido
-    event.preventDefault();
+document.addEventListener("DOMContentLoaded", function () {
+    // Obtenha as mensagens do atributo de dados
+    const messages = JSON.parse(document.body.dataset.messages || "[]");
 
-    // Obter os valores dos campos
-    var email = document.getElementById('email').value;
-    var password = document.getElementById('password').value;
+    // Elemento para exibir as mensagens
+    const messageBox = document.getElementById("messageBox");
 
-    // Seleciona a mensagem de erro
-    var errorMessage = document.getElementById('errorMessage');
+    if (messages.length > 0) {
+        messages.forEach(([category, text]) => {
+            // Define estilos com base na categoria
+            const colorClass = category === 'success'
+                ? 'bg-green-100 text-green-700'
+                : 'bg-red-100 text-red-700';
 
-    // Verifica se ambos os campos estão preenchidos
-    if (email === "" || password === "") {
-        // Exibe a mensagem de erro se algum campo estiver vazio
-        errorMessage.style.display = "block";
-        errorMessage.textContent = "Por favor, preencha todos os campos!";
-    } else {
-        // Caso contrário, a mensagem de erro é escondida
-        errorMessage.style.display = "none";
-        
-        // Aqui você pode adicionar qualquer lógica de login (como chamar a API ou verificar no servidor)
-        
-        // Exemplo de sucesso:
-        alert("Login realizado com sucesso!");
+            messageBox.className = `block ${colorClass} p-4 mb-4 rounded-lg`;
+            messageBox.textContent = text;
 
-        // Se você estiver usando Flask, pode deixar o formulário enviar normalmente depois da validação
-        document.querySelector('form').submit();
+            // Remove mensagem após 5 segundos
+            setTimeout(() => {
+                messageBox.classList.add("hidden");
+            }, 5000);
+        });
     }
-}
-
+});

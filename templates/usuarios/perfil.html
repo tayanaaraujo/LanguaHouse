@@ -25,7 +25,6 @@
       <h3 class="text-xl font-semibold text-purple-700 mb-4">Menu</h3>
       <nav>
       <div class="space-y-2">
-        <a href="#home" class="block text-lg text-gray-700 hover:text-purple-700 transition-all duration-300 transform hover:scale-105 hover:bg-gray-100 p-2 rounded-md">Home</a>
         <a href="{{ url_for('forum')}}" class="block text-lg text-gray-700 hover:text-purple-700 transition-all duration-300 transform hover:scale-105 hover:bg-gray-100 p-2 rounded-md">Fórum</a>
         <a href="{{ url_for('perfil_idioma', id=user_id) }}" class="block text-lg text-gray-700 hover:text-purple-700 transition-all duration-300 transform hover:scale-105 hover:bg-gray-100 p-2 rounded-md">Idiomas</a>
         <a href="{{ url_for('update', id=user_id) }}" class="block text-lg text-gray-700 hover:text-purple-700 transition-all duration-300 transform hover:scale-105 hover:bg-gray-100 p-2 rounded-md">Atualizar Perfil</a>
